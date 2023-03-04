@@ -49,6 +49,7 @@ public class Server {
             map.put("phone", rs.getString("phone"));
             map.put("firstname", rs.getString("firstname"));
             map.put("lastname", rs.getString("lastname"));
+            map.put("role", rs.getString("role"));
             list.add(map);
         }
         return list;
@@ -96,6 +97,7 @@ class ClientHandler extends Thread {
                         out.println(map.get("phone"));
                         out.println(map.get("firstname"));
                         out.println(map.get("lastname"));
+                        out.println(map.get("role"));
                     }
                 } else {
                     out.println("Invalid command");

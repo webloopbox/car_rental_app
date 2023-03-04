@@ -41,19 +41,21 @@ public class Controller {
             int size = Integer.parseInt(in.readLine());
             
             if(size > 0) {
-                loginForm.dispose();
-                DashboardUser dashboardUser = new DashboardUser();
-                dashboardUser.show();
+                
                 for (int i = 0; i < size; i++) {
                     int id = Integer.parseInt(in.readLine());
                     
                     String name = in.readLine();
+                    String pass = in.readLine();
                     String email = in.readLine();
                     String phone = in.readLine();
                     String firstname = in.readLine();
                     String lastname = in.readLine();
+                    String role = in.readLine();
                     
                     System.out.printf(name);
+                    System.out.printf(" ------- ");
+                    System.out.printf(pass);
                     System.out.printf(" ------- ");
                     System.out.printf(email);
                     System.out.printf(" ------- ");
@@ -62,6 +64,19 @@ public class Controller {
                     System.out.printf(firstname);
                     System.out.printf(" ------- ");
                     System.out.printf(lastname);
+                    System.out.printf(" ------- ");
+                    System.out.println(role);
+                    
+                    if(role == "user") {
+                        loginForm.dispose();
+                        Dashboard dashboard = new Dashboard();
+                        dashboard.show();
+                    } else {
+                        loginForm.dispose();
+                        DashboardUser dashboardUser = new DashboardUser();
+                        dashboardUser.show();
+                    }
+                    
                 }
             } else {
                 JOptionPane.showMessageDialog(loginForm, "Podano zły login lub haslo");
