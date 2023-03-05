@@ -67,14 +67,14 @@ public class Controller {
                     System.out.printf(" ------- ");
                     System.out.println(role);
                     
-                    if(role == "user") {
-                        loginForm.dispose();
-                        Dashboard dashboard = new Dashboard();
-                        dashboard.show();
-                    } else {
+                    if(role == "user") {  
                         loginForm.dispose();
                         DashboardUser dashboardUser = new DashboardUser();
                         dashboardUser.show();
+                    } else {
+                         loginForm.dispose();
+                        Dashboard dashboard = new Dashboard();
+                        dashboard.show();
                     }
                     
                 }
