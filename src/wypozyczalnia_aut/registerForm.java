@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -18,7 +20,7 @@ public class registerForm extends javax.swing.JFrame {
     public registerForm() {
         initComponents();
         
-        controller = Wypozyczalnia_Aut.getController();
+        controller = Main.getController();
         
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -50,6 +52,13 @@ public class registerForm extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
+    private static boolean isValidEmail(String email) {
+    String regex = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+    Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+    Matcher matcher = pattern.matcher(email);
+    return matcher.matches();
+    }
+    
     private void registerUser() {
             String email = EmailInput.getText();
             String pass = String.valueOf(PasswordInput.getPassword());
@@ -69,6 +78,12 @@ public class registerForm extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(this, "Hasła się nie zgadzają", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
                    return;
             }
+            
+            if(!this.isValidEmail(email)) {
+                 JOptionPane.showMessageDialog(this, "Email jest niepoprawny", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
+                   return;
+            }
+            
             
             controller.registerUser(this, email, pass, username, firstname, lastname, address, phone);
     }

@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import server.Server;
 
-public class Wypozyczalnia_Aut {
+public class Main {
     public static Controller controller;
     private static Server server;
     
@@ -14,7 +14,7 @@ public class Wypozyczalnia_Aut {
         
         // start a new thread that runs the controller's methods
         // the Server class creates a new thread for each client connection in the main method, which is handled by the ClientHandler class. 
-        // similarly, in the Wypozyczalnia_Aut class, a new thread is created to run the Server instance's main method.
+        // similarly, in the Main class, a new thread is created to run the Server instance's main method.
         new Thread(() -> {
             String[] args_ = {}; // arguments to pass to the main method
         try {

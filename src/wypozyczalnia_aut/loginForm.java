@@ -19,7 +19,7 @@ public class loginForm extends javax.swing.JFrame {
     public loginForm() {
         initComponents();
         
-        controller = Wypozyczalnia_Aut.getController();
+        controller = Main.getController();
         
         //Centrowanie Okienka
         this.setLocationRelativeTo(null);
