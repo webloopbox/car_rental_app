@@ -7,17 +7,30 @@ import java.util.*;
 
 public class Server {
     private static Connection con;
+    public static int portNumber = 8000;
 
     public static void main(String[] args) throws Exception {
-        ServerSocket ss = new ServerSocket(9999);
-        System.out.println("Server is running...");
-        con = DriverManager.getConnection("jdbc:mysql://localhost/car_rental", "root", "");
-        while (true) {
-            Socket s = ss.accept();
-            System.out.println("New client connected: " + s);
-            ClientHandler handler = new ClientHandler(s, con);
-            new Thread(handler).start();
-        }
+        boolean foundPort = false;
+        
+        while (!foundPort) {
+            try {
+                ServerSocket ss = new ServerSocket(portNumber);
+                foundPort = true;
+                
+                System.out.println("Server is running...");
+                con = DriverManager.getConnection("jdbc:mysql://localhost/car_rental", "root", "");
+                
+                while (true) {
+                    Socket s = ss.accept();
+                    System.out.println("New client connected: " + s);
+                    ClientHandler handler = new ClientHandler(s, con);
+                    new Thread(handler).start();
+                }
+                
+            } catch(Exception e) {
+                portNumber++;
+            }
+        }    
     }
 
     public static void addUser(String email, String password, String username, String firstname, String lastname, String address, String phone, String role) throws SQLException {
@@ -107,8 +120,11 @@ class ClientHandler implements Runnable {
                 }
             }
             s.close();
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SocketException e) {
+        // Connection reset by client
+        System.out.println("Client disconnected: " + s);
+    } catch (IOException | SQLException e) {
+        e.printStackTrace();
     }
+}
 }

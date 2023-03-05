@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import server.Server;
 
 public class Controller {
     private Socket socket;
@@ -19,7 +20,7 @@ public class Controller {
     
     public Controller() {
         try {
-            socket = new Socket("localhost", 9999);
+            socket = new Socket("localhost", Server.portNumber);
             System.out.println("Connected to server: " + socket);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
