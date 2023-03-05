@@ -19,7 +19,7 @@ public class loginForm extends javax.swing.JFrame {
     public loginForm() {
         initComponents();
         
-        controller = new Controller();
+        controller = Main.getController();
         
         //Centrowanie Okienka
         this.setLocationRelativeTo(null);
@@ -263,7 +263,7 @@ public class loginForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new loginForm().setVisible(true);
+//                new loginForm().setVisible(true);
             }
         });
     }
