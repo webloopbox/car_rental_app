@@ -69,12 +69,13 @@ public class Controller {
                     
                     if(role == "user") {
                         loginForm.dispose();
-                        Dashboard dashboard = new Dashboard();
-                        dashboard.show();
-                    } else {
-                        loginForm.dispose();
                         DashboardUser dashboardUser = new DashboardUser();
                         dashboardUser.show();
+
+                    } else {
+                        loginForm.dispose();
+                        Dashboard dashboard = new Dashboard();
+                        dashboard.show();
                     }
                     
                 }

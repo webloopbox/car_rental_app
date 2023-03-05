@@ -15,7 +15,8 @@ public class Server {
         while (true) {
             Socket s = ss.accept();
             System.out.println("New client connected: " + s);
-            new ClientHandler(s).start();
+            ClientHandler handler = new ClientHandler(s, con);
+            new Thread(handler).start();
         }
     }
 
@@ -56,11 +57,13 @@ public class Server {
     }
 }
 
-class ClientHandler extends Thread {
+class ClientHandler implements Runnable {
     private Socket s;
+    private Connection con;
 
-    public ClientHandler(Socket s) {
+    public ClientHandler(Socket s, Connection con) {
         this.s = s;
+        this.con = con;
     }
 
     public void run() {
@@ -104,7 +107,7 @@ class ClientHandler extends Thread {
                 }
             }
             s.close();
-        } catch (Exception e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
