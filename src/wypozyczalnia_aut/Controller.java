@@ -19,6 +19,7 @@ public class Controller {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
+    public static int id;
     
     public Controller() {
         try {
@@ -48,7 +49,7 @@ public class Controller {
                 
                 for (int i = 0; i < size; i++) {
                     int id = Integer.parseInt(in.readLine());
-                    
+                    this.id = id;
                     String name = in.readLine();
                     String pass = in.readLine();
                     String email = in.readLine();

@@ -19,7 +19,7 @@ public class DashboardUser extends javax.swing.JFrame {
         initComponents();
         
         
-        ClientLabel.setText(controller.getUserData(5, "username")[0]);
+        ClientLabel.setText(controller.getUserData(controller.id, "username")[0]);
     }
 
     /**
