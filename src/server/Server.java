@@ -68,6 +68,38 @@ public class Server {
         }
         return list;
     }
+    
+        public static List<Map<String, Object>> getUserData(int userId, String fieldType) throws SQLException {
+            List<Map<String, Object>> list = new ArrayList<>();
+            String sql;
+            if(!fieldType.isEmpty() ) {
+                sql = "SELECT " + fieldType + " FROM users WHERE id=?";
+            } else {
+                sql = "SELECT * FROM users WHERE id=?";
+            }
+            
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> map = new HashMap<>();
+                if(!fieldType.isEmpty() ) {
+                    map.put(fieldType, rs.getString(fieldType));
+                } else {
+                    map.put("id", rs.getInt("id"));
+                    map.put("username", rs.getString("username"));
+                    map.put("password", rs.getString("password"));
+                    map.put("email", rs.getString("email"));
+                    map.put("phone", rs.getString("phone"));
+                    map.put("firstname", rs.getString("firstname"));
+                    map.put("lastname", rs.getString("lastname"));
+                    map.put("role", rs.getString("role"));
+                }
+                
+                list.add(map);
+            }
+            return list;
+    }
 }
 
 class ClientHandler implements Runnable {
@@ -114,6 +146,27 @@ class ClientHandler implements Runnable {
                         out.println(map.get("firstname"));
                         out.println(map.get("lastname"));
                         out.println(map.get("role"));
+                    }
+                } else if (line.equals("GET_USER_DATA")) {
+                    
+                    int userId = Integer.parseInt(in.readLine());
+                    String fieldType = in.readLine();
+                    List<Map<String, Object>> data = Server.getUserData(userId, fieldType);
+                    out.println(data.size());
+                    
+                    for (Map<String, Object> map : data) {
+                        if(!fieldType.isEmpty() ) {
+                            out.println(map.get(fieldType));
+                        } else {
+                            out.println(map.get("id"));
+                            out.println(map.get("username"));
+                            out.println(map.get("password"));
+                            out.println(map.get("email"));
+                            out.println(map.get("phone"));
+                            out.println(map.get("firstname"));
+                            out.println(map.get("lastname"));
+                            out.println(map.get("role"));
+                        }
                     }
                 } else {
                     out.println("Invalid command");

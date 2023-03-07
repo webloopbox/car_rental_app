@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -30,6 +32,7 @@ public class Controller {
     }
     
     public void loginUser(loginForm loginForm, JTextField LoginInput, JPasswordField PassInput) {
+        System.out.println(" RENDER ");
         try {
             
             String username = LoginInput.getText();
@@ -121,4 +124,31 @@ public class Controller {
              System.out.println(e);
         }
     }
+    
+    /*
+    @params receive field param, for example username or email
+    If fieldType argument passed then return 1 field
+    Otherwise return all user fields
+    */
+    public String[] getUserData(int userId, String fieldType) {
+    List<String> dataList = new ArrayList<>();
+    
+    try {
+        out.println("GET_USER_DATA");
+        
+        out.println(userId);
+        out.println(fieldType);
+        
+        int size = Integer.parseInt(in.readLine());
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                dataList.add(in.readLine());
+            }
+        }
+    } catch(Exception e) { }
+    
+    String[] dataArray = dataList.toArray(new String[0]);
+    return dataArray;
+}
+    
 }
