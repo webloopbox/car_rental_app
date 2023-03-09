@@ -18,7 +18,7 @@ public class DashboardUser extends javax.swing.JFrame {
     public DashboardUser() {
         initComponents();
         
-        
+        //Nw czemu ale tutaj wywala mi blad przy odpalaniu :/ 
         ClientLabel.setText(controller.getUserData(controller.id, "username")[0]);
     }
 
@@ -36,10 +36,9 @@ public class DashboardUser extends javax.swing.JFrame {
         jLabel_UserIcon = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         ClientLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButton1_Client_Cars = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jButton4_Rent_Car_Client = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -71,13 +70,21 @@ public class DashboardUser extends javax.swing.JFrame {
         ClientLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         ClientLabel.setText("kliencie");
 
-        jButton1.setText("Twoje samochody");
+        jButton1_Client_Cars.setText("Twoje samochody");
+        jButton1_Client_Cars.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1_Client_CarsActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Wyloguj się");
 
-        jButton3.setText("Kokpit");
-
-        jButton4.setText("Wypożycz samochód");
+        jButton4_Rent_Car_Client.setText("Wypożycz samochód");
+        jButton4_Rent_Car_Client.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4_Rent_Car_ClientActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -86,7 +93,7 @@ public class DashboardUser extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1_Client_Cars, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel_UserIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -96,13 +103,8 @@ public class DashboardUser extends javax.swing.JFrame {
                                 .addGap(0, 8, Short.MAX_VALUE))
                             .addComponent(ClientLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton4_Rent_Car_Client, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,17 +119,12 @@ public class DashboardUser extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ClientLabel)))
                 .addGap(97, 97, 97)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1_Client_Cars, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton4_Rent_Car_Client, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(144, 144, 144)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(310, Short.MAX_VALUE)))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -272,6 +269,22 @@ public class DashboardUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1_Client_CarsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_Client_CarsActionPerformed
+        // TODO add your handling code here:
+        clientCars clientCarsAll = new clientCars();
+        clientCarsAll.setVisible(true);
+        clientCarsAll.pack();
+        clientCarsAll.setLocationRelativeTo(null);  
+    }//GEN-LAST:event_jButton1_Client_CarsActionPerformed
+
+    private void jButton4_Rent_Car_ClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4_Rent_Car_ClientActionPerformed
+        // TODO add your handling code here:
+        rentCarFormClient clientRentCar = new rentCarFormClient();
+        clientRentCar.setVisible(true);
+        clientRentCar.pack();
+        clientRentCar.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jButton4_Rent_Car_ClientActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -309,10 +322,9 @@ public class DashboardUser extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ClientLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton1_Client_Cars;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton4_Rent_Car_Client;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

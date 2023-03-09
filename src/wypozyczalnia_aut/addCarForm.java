@@ -4,6 +4,8 @@
  */
 package wypozyczalnia_aut;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Janek
@@ -15,6 +17,9 @@ public class addCarForm extends javax.swing.JFrame {
      */
     public addCarForm() {
         initComponents();
+        
+        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -95,7 +100,7 @@ public class addCarForm extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Numer VIN", "Marka", "Model", "Pojemność silnika", "Rok produkcji", "Cena za dzień", "Dostępność"
+                "Numer rej.", "Marka", "Model", "Pojemność silnika", "Rok produkcji", "Cena za dzień", "Dostępność"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
