@@ -94,9 +94,9 @@
                                       <Group type="102" alignment="1" attributes="0">
                                           <Component id="AddCarBtn" min="-2" pref="110" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jButton3" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <Component id="EditBtn" min="-2" pref="110" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jButton4" min="-2" pref="116" max="-2" attributes="0"/>
+                                          <Component id="DeleteBtn" min="-2" pref="116" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="ClearBtn" alignment="1" min="-2" pref="348" max="-2" attributes="0"/>
                                   </Group>
@@ -162,8 +162,8 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="AddCarBtn" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                              <Component id="jButton3" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                              <Component id="jButton4" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="EditBtn" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="DeleteBtn" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="ClearBtn" min="-2" pref="36" max="-2" attributes="0"/>
@@ -430,15 +430,21 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="EditBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Edytuj"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EditBtnActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton4">
+        <Component class="javax.swing.JButton" name="DeleteBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Usu&#x144;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DeleteBtnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="ClearBtn">
           <Properties>

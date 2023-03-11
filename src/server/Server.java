@@ -69,7 +69,7 @@ public class Server {
         }
         return list;
     }
-    
+
     public static void insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) throws SQLException {
         String sql = "INSERT INTO cars (reg_number, brand, model, engine_capacity, year, price, availability) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -82,7 +82,6 @@ public class Server {
         stmt.setBoolean(7, availability);
         stmt.executeUpdate();
     }
-
 
     public static List<Map<String, Object>> getUserData(int userId, String fieldType) throws SQLException {
         List<Map<String, Object>> list = new ArrayList<>();
@@ -135,6 +134,28 @@ public class Server {
         }
         return list;
     }
+
+    public static void updateCar(int carId, String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) throws SQLException {
+        String sql = "UPDATE cars SET reg_number=?, brand=?, model=?, engine_capacity=?, year=?, price=?, availability=? WHERE id=?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, regNumber);
+        stmt.setString(2, brand);
+        stmt.setString(3, model);
+        stmt.setDouble(4, engineCapacity);
+        stmt.setInt(5, year);
+        stmt.setDouble(6, price);
+        stmt.setBoolean(7, availability);
+        stmt.setInt(8, carId);
+        stmt.executeUpdate();
+    }
+
+    public static void deleteCar(int id) throws SQLException {
+        String sql = "DELETE FROM cars WHERE id = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+    }
+
 }
 
 class ClientHandler implements Runnable {
@@ -218,18 +239,33 @@ class ClientHandler implements Runnable {
                         out.println(map.get("availability"));
                     }
                 } else if (line.startsWith("INSERT_CAR")) {
-                String[] parts = line.split("\\s+");
-                String regNumber = parts[1];
-                String brand = parts[2];
-                String model = parts[3];
-                double engineCapacity = Double.parseDouble(parts[4].replace(",", "."));
-                int year = Integer.parseInt(parts[5]);
-                double price = Double.parseDouble(parts[6].replace(",", "."));
-                boolean availability = Boolean.parseBoolean(parts[7]);
-                Server.insertCar(regNumber, brand, model, engineCapacity, year, price, availability);
-                out.println("Car inserted successfully");
-                }
-                else {
+                    String[] parts = line.split("\\s+");
+                    String regNumber = parts[1];
+                    String brand = parts[2];
+                    String model = parts[3];
+                    double engineCapacity = Double.parseDouble(parts[4].replace(",", "."));
+                    int year = Integer.parseInt(parts[5]);
+                    double price = Double.parseDouble(parts[6].replace(",", "."));
+                    boolean availability = Boolean.parseBoolean(parts[7]);
+                    Server.insertCar(regNumber, brand, model, engineCapacity, year, price, availability);
+                    out.println("Car inserted successfully");
+                } else if (line.startsWith("DELETE_CAR")) {
+                    int id = Integer.parseInt(line.split("\\s+")[1]);
+                    Server.deleteCar(id);
+                    out.println("Car deleted successfully");
+                } else if (line.startsWith("UPDATE_CAR")) {
+                    String[] parts = line.split("\\s+");
+                    int carId = Integer.parseInt(parts[1]);
+                    String regNumber = parts[2];
+                    String brand = parts[3];
+                    String model = parts[4];
+                    double engineCapacity = Double.parseDouble(parts[5].replace(",", "."));
+                    int year = Integer.parseInt(parts[6]);
+                    double price = Double.parseDouble(parts[7].replace(",", "."));
+                    boolean availability = Boolean.parseBoolean(parts[8]);
+                    Server.updateCar(carId, regNumber, brand, model, engineCapacity, year, price, availability);
+                    out.println("Car updated successfully");
+                } else {
                     out.println("Invalid command");
                 }
             }

@@ -189,4 +189,21 @@ public class Controller {
         }
     }
 
+    public void deleteCar(int id) {
+        try {
+            out.println("DELETE_CAR " + id);
+            String response = in.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updateCar(int carId, String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
+        try {
+            out.println("UPDATE_CAR " + carId + " " + regNumber + " " + brand + " " + model + " " + engineCapacity + " " + year + " " + price + " " + availability);
+            String response = in.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -13,6 +13,8 @@ import static wypozyczalnia_aut.Main.controller;
 
 public class addCarForm extends javax.swing.JFrame {
 
+    public static int edit_id;
+
     /**
      * Creates new form addCarForm
      */
@@ -104,8 +106,8 @@ public class addCarForm extends javax.swing.JFrame {
         AddCarBtn = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         AvailabilityInput = new javax.swing.JComboBox<>();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        EditBtn = new javax.swing.JButton();
+        DeleteBtn = new javax.swing.JButton();
         ClearBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -208,9 +210,19 @@ public class addCarForm extends javax.swing.JFrame {
 
         AvailabilityInput.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tak", "Nie" }));
 
-        jButton3.setText("Edytuj");
+        EditBtn.setText("Edytuj");
+        EditBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditBtnActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Usuń");
+        DeleteBtn.setText("Usuń");
+        DeleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteBtnActionPerformed(evt);
+            }
+        });
 
         ClearBtn.setText("Wyczyść");
         ClearBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -265,9 +277,9 @@ public class addCarForm extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(AddCarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(EditBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(DeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(ClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(20, 20, 20)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -317,8 +329,8 @@ public class addCarForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(AddCarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(EditBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(DeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(ClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(27, Short.MAX_VALUE))))
@@ -347,12 +359,116 @@ public class addCarForm extends javax.swing.JFrame {
     }//GEN-LAST:event_AddCarBtnActionPerformed
 
     private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
-        YearInput.setText(""); 
-        Capacity.setText(""); 
-        ModelInput.setText(""); 
-        CarRegInput.setText(""); 
-        PriceInput.setText(""); 
+        YearInput.setText("");
+        Capacity.setText("");
+        ModelInput.setText("");
+        CarRegInput.setText("");
+        PriceInput.setText("");
     }//GEN-LAST:event_ClearBtnActionPerformed
+
+    private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
+        String inputValue = JOptionPane.showInputDialog("Podaj ID samochodu:");
+        int id = Integer.parseInt(inputValue);
+        controller.deleteCar(id);
+        fetchCarListIntoTable();
+    }//GEN-LAST:event_DeleteBtnActionPerformed
+
+    private void EditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBtnActionPerformed
+
+        if (EditBtn.getText().equals("Zapisz")) {
+            String brand = (String) SelectBrand.getSelectedItem();
+            int year = Integer.parseInt(YearInput.getText());
+            double capacity = Double.parseDouble(Capacity.getText());
+            String model = ModelInput.getText();
+            String registration = CarRegInput.getText();
+            double price = Double.parseDouble(PriceInput.getText());
+            String availability = (String) AvailabilityInput.getSelectedItem();
+
+            boolean availability_bool;
+            if (availability.equals("Tak")) {
+                availability_bool = true;
+            } else {
+                availability_bool = false;
+            }
+
+            controller.updateCar(edit_id, registration, brand, model, capacity, year, price, availability_bool);
+            fetchCarListIntoTable();
+
+            AddCarBtn.setEnabled(true);
+            DeleteBtn.setEnabled(true);
+
+            // Zmieniamy tekst na przycisku Edytuj na Zapisz
+            EditBtn.setText("Edytuj");
+
+        } else {
+
+            // Wyświetlamy okno dialogowe z polem tekstowym
+            String inputValue = JOptionPane.showInputDialog("Podaj ID samochodu:");
+
+            // Sprawdzamy, czy wartość została wprowadzona
+            if (inputValue != null && !inputValue.isEmpty()) {
+                // Parsujemy wartość do liczby całkowitej
+                int id = Integer.parseInt(inputValue);
+                edit_id = id;
+                // Przeszukujemy tabelę w poszukiwaniu wiersza o podanym ID
+                DefaultTableModel model = (DefaultTableModel) CarsTable.getModel();
+                int rowIndex = -1;
+
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    System.out.println("Comparing ID " + id + " with " + model.getValueAt(i, 0));
+                    if (String.valueOf(id).equals(model.getValueAt(i, 0))) {
+                        rowIndex = i;
+                        break;
+                    }
+                }
+
+                // Jeśli znaleziono wiersz, pobieramy dane z tabeli
+                if (rowIndex >= 0) {
+                    Object[] rowData = new Object[model.getColumnCount()];
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        rowData[j] = model.getValueAt(rowIndex, j);
+                    }
+
+                    // Przykładowe wykorzystanie pobranych danych
+                    String car_reqistration = (String) rowData[1];
+                    String brand = (String) rowData[2];
+                    String model_car = (String) rowData[3];
+                    String capacity = (String) rowData[4];
+                    String yearStr = (String) rowData[5];
+                    int year = Integer.parseInt(yearStr);
+                    String price = (String) rowData[6];
+                    String availability = (String) rowData[7];
+
+                    String availability_text;
+                    if (availability.equals("true")) {
+                        availability_text = "Tak";
+                    } else {
+                        availability_text = "Nie";
+                    }
+
+                    // Wyświetlamy dane w polach tekstowych
+                    SelectBrand.setSelectedItem(brand);
+                    ModelInput.setText(model_car);
+                    Capacity.setText(capacity);
+                    YearInput.setText(Integer.toString(year));
+                    PriceInput.setText(price);
+                    CarRegInput.setText(car_reqistration);
+                    AvailabilityInput.setSelectedItem(availability_text);
+
+                    // Wyłączamy przyciski Dodaj i Usuń
+                    AddCarBtn.setEnabled(false);
+                    DeleteBtn.setEnabled(false);
+
+                    // Zmieniamy tekst na przycisku Edytuj na Zapisz
+                    EditBtn.setText("Zapisz");
+
+                } else {
+                    // Jeśli nie znaleziono wiersza, wyświetlamy odpowiedni komunikat
+                    JOptionPane.showMessageDialog(this, "Nie znaleziono samochodu o podanym ID", "Błąd", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_EditBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,12 +512,12 @@ public class addCarForm extends javax.swing.JFrame {
     private javax.swing.JTextField CarRegInput;
     private javax.swing.JTable CarsTable;
     private javax.swing.JButton ClearBtn;
+    private javax.swing.JButton DeleteBtn;
+    private javax.swing.JButton EditBtn;
     private javax.swing.JTextField ModelInput;
     private javax.swing.JTextField PriceInput;
     private javax.swing.JComboBox<String> SelectBrand;
     private javax.swing.JTextField YearInput;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
