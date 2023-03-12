@@ -68,18 +68,18 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Component id="jButton3" max="32767" attributes="0"/>
+                                  <Component id="AddUserBtn" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jTextField4" alignment="1" max="32767" attributes="0"/>
-                              <Component id="jTextField3" alignment="1" max="32767" attributes="0"/>
-                              <Component id="jTextField7" alignment="0" pref="276" max="32767" attributes="0"/>
+                              <Component id="AddressInput" alignment="1" max="32767" attributes="0"/>
+                              <Component id="PassInput" alignment="1" max="32767" attributes="0"/>
+                              <Component id="PhoneInput" alignment="0" pref="276" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jButton2" min="-2" pref="125" max="-2" attributes="0"/>
+                                  <Component id="EditUserBtn" min="-2" pref="125" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButton4" max="32767" attributes="0"/>
+                                  <Component id="DeleteUserBtn" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -96,14 +96,14 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jTextField5" pref="276" max="32767" attributes="0"/>
-                                      <Component id="jTextField2" max="32767" attributes="0"/>
-                                      <Component id="jTextField1" max="32767" attributes="0"/>
-                                      <Component id="jTextField6" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="EmailInput" pref="276" max="32767" attributes="0"/>
+                                      <Component id="LastnameInput" max="32767" attributes="0"/>
+                                      <Component id="FirstnameInput" max="32767" attributes="0"/>
+                                      <Component id="UsernameInput" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jButton5" min="-2" pref="417" max="-2" attributes="0"/>
+                                  <Component id="ResetUserFormBtn" min="-2" pref="417" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -126,47 +126,47 @@
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField1" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="FirstnameInput" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField2" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="LastnameInput" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField6" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="UsernameInput" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField5" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="EmailInput" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField3" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="PassInput" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField4" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="AddressInput" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField7" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="PhoneInput" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButton2" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                              <Component id="jButton3" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                              <Component id="jButton4" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="EditUserBtn" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="AddUserBtn" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="DeleteUserBtn" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton5" min="-2" pref="36" max="-2" attributes="0"/>
+                          <Component id="ResetUserFormBtn" min="-2" pref="36" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane1" pref="499" max="32767" attributes="0"/>
@@ -228,7 +228,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="jTable1">
+            <Component class="javax.swing.JTable" name="ClientsTable">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="4">
@@ -370,41 +370,50 @@
             <Property name="text" type="java.lang.String" value="Adres e-mail:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="FirstnameInput">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField2">
+        <Component class="javax.swing.JTextField" name="LastnameInput">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField3">
+        <Component class="javax.swing.JTextField" name="PassInput">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField4">
+        <Component class="javax.swing.JTextField" name="AddressInput">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField5">
+        <Component class="javax.swing.JTextField" name="EmailInput">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField6">
+        <Component class="javax.swing.JTextField" name="UsernameInput">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField7">
+        <Component class="javax.swing.JTextField" name="PhoneInput">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="EditUserBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Edytuj dane"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EditUserBtnActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="AddUserBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Dodaj klienta"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddUserBtnActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton4">
+        <Component class="javax.swing.JButton" name="DeleteUserBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Usu&#x144; klienta"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DeleteUserBtnActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton5">
+        <Component class="javax.swing.JButton" name="ResetUserFormBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Wyczy&#x15b;&#x107; formularz"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ResetUserFormBtnActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

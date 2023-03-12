@@ -115,6 +115,26 @@ public class Server {
         return list;
     }
 
+    public static List<Map<String, Object>> getAllUsers() throws SQLException {
+        List<Map<String, Object>> list = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        while (rs.next()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", rs.getInt("id"));
+            map.put("username", rs.getString("username"));
+            map.put("email", rs.getString("email"));
+            map.put("phone", rs.getString("phone"));
+            map.put("address", rs.getString("address"));
+            map.put("firstname", rs.getString("firstname"));
+            map.put("lastname", rs.getString("lastname"));
+            map.put("role", rs.getString("role"));
+            list.add(map);
+        }
+        return list;
+    }
+
     public static List<Map<String, Object>> getAllCars() throws SQLException {
         List<Map<String, Object>> list = new ArrayList<>();
         String sql = "SELECT * FROM cars";
@@ -148,9 +168,30 @@ public class Server {
         stmt.setInt(8, carId);
         stmt.executeUpdate();
     }
+    
+        public static void updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) throws SQLException {
+        String sql = "UPDATE users SET firstname=?, lastname=?, username=?, email=?, address=?, phone=? WHERE id=?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, firstname);
+        stmt.setString(2, lastname);
+        stmt.setString(3, username);
+        stmt.setString(4, email);
+        stmt.setString(5, address);
+        stmt.setString(6, phone);
+        stmt.setInt(7, userId);
+        stmt.executeUpdate();
+    }
+
 
     public static void deleteCar(int id) throws SQLException {
         String sql = "DELETE FROM cars WHERE id = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+    }
+
+    public static void deleteUser(int id) throws SQLException {
+        String sql = "DELETE FROM users WHERE id = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.executeUpdate();
@@ -225,6 +266,45 @@ class ClientHandler implements Runnable {
                             out.println(map.get("role"));
                         }
                     }
+                } else if (line.equals("GET_ALL_USERS")) {
+                    List<Map<String, Object>> data = Server.getAllUsers();
+                    out.println(data.size());
+                    for (Map<String, Object> map : data) {
+                        out.println(map.get("id"));
+                        out.println(map.get("username"));
+                        out.println(map.get("email"));
+                        out.println(map.get("phone"));
+                        out.println(map.get("address"));
+                        out.println(map.get("firstname"));
+                        out.println(map.get("lastname"));
+                        out.println(map.get("role"));
+                    }
+                } else if (line.startsWith("UPDATE_USER")) {
+                    
+                     String[] parts = line.split("\\s+");
+                    System.out.println("parts[0]: "+parts[0]);
+                    System.out.println("parts[1]: "+parts[1]);
+                   System.out.println("parts[2]: "+parts[2]);
+                    System.out.println("parts[3]: "+parts[3]);
+                     System.out.println("parts[4]: "+parts[4]);
+                    System.out.println("parts[5]: "+parts[5]);
+                    System.out.println("parts[6]: "+parts[5]);
+                    System.out.println("parts[7]: "+parts[7]);
+                   
+                    int userId = Integer.parseInt(parts[1]);
+                    String firstname = parts[2];
+                    String lastname = parts[3];
+                    String username = parts[4];
+                    String email = parts[5];
+                    String address = parts[6];
+                    String phone = parts[7];
+                    
+                    Server.updateUser(userId, firstname, lastname, username, email, address, phone);
+                    out.println("Car updated successfully");
+                } else if (line.startsWith("DELETE_USER")) {
+                    int id = Integer.parseInt(line.split("\\s+")[1]);
+                    Server.deleteUser(id);
+                    out.println("User deleted successfully");
                 } else if (line.equals("GET_ALL_CARS")) {
                     List<Map<String, Object>> data = Server.getAllCars();
                     out.println(data.size());

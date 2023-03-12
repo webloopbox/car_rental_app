@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -21,7 +23,7 @@ public class Controller {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    public static int id;
+    public static Integer id;
 
     public Controller() {
         try {
@@ -96,7 +98,7 @@ public class Controller {
         }
     }
 
-    public void registerUser(registerForm registerForm, String email, String password, String username, String firstname, String lastname, String address, String phone) {
+    public void registerUser(JFrame registerForm, String email, String password, String username, String firstname, String lastname, String address, String phone) {
 
         try {
             out.println("REGISTER_USER");
@@ -113,9 +115,12 @@ public class Controller {
             String size = in.readLine();
             if (size != null) {
                 System.out.printf(size);
-                registerForm.dispose();
-                Dashboard dashboard = new Dashboard();
-                dashboard.show();
+                if (this.id == null) {
+                    registerForm.dispose();
+                    DashboardUser dashboardUser = new DashboardUser();
+                    dashboardUser.show();
+                }
+
             }
 
         } catch (Exception e) {
@@ -206,4 +211,49 @@ public class Controller {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) {
+        System.out.println("----------------------- WORKS?"+phone);
+        try {
+            out.println("UPDATE_USER " + userId + " " + firstname + " " + lastname + " " + username + " " + email + " " + address + " " + phone);
+            String response = in.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<Map<String, Object>> getAllUsers() {
+        List<Map<String, Object>> data = new ArrayList<>();
+        try {
+            out.println("GET_ALL_USERS");
+            int size = Integer.parseInt(in.readLine());
+            if (size > 0) {
+                for (int i = 0; i < size; i++) {
+                    Map<String, Object> row = new HashMap<>();
+                    row.put("id", in.readLine());
+                    row.put("username", in.readLine());
+                    row.put("email", in.readLine());
+                    row.put("phone", in.readLine());
+                    row.put("address", in.readLine());
+                    row.put("firstname", in.readLine());
+                    row.put("lastname", in.readLine());
+                    row.put("role", in.readLine());
+                    data.add(row);
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return data;
+    }
+
+    public void deleteUser(int id) {
+        try {
+            out.println("DELETE_USER " + id);
+            String response = in.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

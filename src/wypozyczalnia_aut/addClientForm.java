@@ -1,24 +1,78 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package wypozyczalnia_aut;
 
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import static wypozyczalnia_aut.Main.controller;
 
-/**
- *
- * @author Janek
- */
 public class addClientForm extends javax.swing.JFrame {
+    
+    public static int edit_user_id;
 
-    /**
-     * Creates new form addClientForm
-     */
     public addClientForm() {
         initComponents();
-        
+
+        fetchClientListIntoTable();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    private void fetchClientListIntoTable() {
+        List<Map<String, Object>> usersData = controller.getAllUsers();
+
+        // Convert the list of maps to a two-dimensional array of objects (in order to display it inside ClientsTable)
+        Object[][] data = new Object[usersData.size()][];
+        for (int i = 0; i < usersData.size(); i++) {
+            Map<String, Object> user = usersData.get(i);
+            data[i] = new Object[]{
+                user.get("id"),
+                user.get("username"),
+                user.get("email"),
+                user.get("phone"),
+                user.get("address"),
+                user.get("firstname"),
+                user.get("lastname"),
+                user.get("role")
+            };
+        }
+
+        // Set the data and column names as the model of the JTable
+        String[] columnNames = new String[]{"ID", "Użytkownik", "Email", "Telefon", "Adres", "Imie", "Nazwisko", "Rola"};
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        ClientsTable.setModel(model);
+    }
+
+    private static boolean isValidEmail(String email) {
+        String regex = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private void addUser() {
+        String firstname = FirstnameInput.getText();
+        String lastname = LastnameInput.getText();
+        String username = UsernameInput.getText();
+        String email = EmailInput.getText();
+        String pass = PassInput.getText();
+        String address = AddressInput.getText();
+        String phone = PhoneInput.getText();
+
+        if (email.isEmpty() || pass.isEmpty() || username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Uzupełnij wszystkie pola", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!this.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Email jest niepoprawny", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        controller.registerUser(this, email, pass, username, firstname, lastname, address, phone);
+        fetchClientListIntoTable();
     }
 
     /**
@@ -34,7 +88,7 @@ public class addClientForm extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        ClientsTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -43,17 +97,17 @@ public class addClientForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        FirstnameInput = new javax.swing.JTextField();
+        LastnameInput = new javax.swing.JTextField();
+        PassInput = new javax.swing.JTextField();
+        AddressInput = new javax.swing.JTextField();
+        EmailInput = new javax.swing.JTextField();
+        UsernameInput = new javax.swing.JTextField();
+        PhoneInput = new javax.swing.JTextField();
+        EditUserBtn = new javax.swing.JButton();
+        AddUserBtn = new javax.swing.JButton();
+        DeleteUserBtn = new javax.swing.JButton();
+        ResetUserFormBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Klienci");
@@ -84,7 +138,7 @@ public class addClientForm extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        ClientsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -95,7 +149,7 @@ public class addClientForm extends javax.swing.JFrame {
                 "Imię", "Nazwisko", "Adres e-mail", "Adres", "Numer telefonu", "Wypożyczeń"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(ClientsTable);
 
         jLabel2.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -130,16 +184,31 @@ public class addClientForm extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Adres e-mail:");
 
-        jButton2.setText("Edytuj dane");
-
-        jButton3.setText("Dodaj klienta");
-
-        jButton4.setText("Usuń klienta");
-
-        jButton5.setText("Wyczyść formularz");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        EditUserBtn.setText("Edytuj dane");
+        EditUserBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                EditUserBtnActionPerformed(evt);
+            }
+        });
+
+        AddUserBtn.setText("Dodaj klienta");
+        AddUserBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddUserBtnActionPerformed(evt);
+            }
+        });
+
+        DeleteUserBtn.setText("Usuń klienta");
+        DeleteUserBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteUserBtnActionPerformed(evt);
+            }
+        });
+
+        ResetUserFormBtn.setText("Wyczyść formularz");
+        ResetUserFormBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetUserFormBtnActionPerformed(evt);
             }
         });
 
@@ -166,16 +235,16 @@ public class addClientForm extends javax.swing.JFrame {
                                         .addGap(0, 4, Short.MAX_VALUE)))
                                 .addGap(18, 18, 18))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(AddUserBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(6, 6, 6)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                            .addComponent(AddressInput, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(PassInput, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(PhoneInput, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(EditUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(DeleteUserBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(12, 12, 12))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -188,12 +257,12 @@ public class addClientForm extends javax.swing.JFrame {
                                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField6)))
+                                    .addComponent(EmailInput, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                                    .addComponent(LastnameInput)
+                                    .addComponent(FirstnameInput)
+                                    .addComponent(UsernameInput)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ResetUserFormBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(12, 12, 12)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -210,39 +279,39 @@ public class addClientForm extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FirstnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LastnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(UsernameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(EmailInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PassInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AddressInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PhoneInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(EditUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AddUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(DeleteUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ResetUserFormBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE))
                 .addContainerGap())
@@ -262,9 +331,108 @@ public class addClientForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void ResetUserFormBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetUserFormBtnActionPerformed
+        FirstnameInput.setText("");
+        LastnameInput.setText("");
+        UsernameInput.setText("");
+        EmailInput.setText("");
+        PassInput.setText("");
+        AddressInput.setText("");
+        PhoneInput.setText("");
+    }//GEN-LAST:event_ResetUserFormBtnActionPerformed
+
+    private void DeleteUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteUserBtnActionPerformed
+        String inputValue = JOptionPane.showInputDialog("Podaj ID klienta:");
+        int id = Integer.parseInt(inputValue);
+        controller.deleteUser(id);
+        fetchClientListIntoTable();
+    }//GEN-LAST:event_DeleteUserBtnActionPerformed
+
+    private void AddUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddUserBtnActionPerformed
+        addUser();
+    }//GEN-LAST:event_AddUserBtnActionPerformed
+
+    private void EditUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditUserBtnActionPerformed
+        if (EditUserBtn.getText().equals("Zapisz")) {
+            String firstname = FirstnameInput.getText();
+            String lastname = LastnameInput.getText();
+            String username = UsernameInput.getText();
+            String email = EmailInput.getText();
+            String pass = PassInput.getText();
+            String address = AddressInput.getText();
+            String phone = PhoneInput.getText();
+
+            controller.updateUser(edit_user_id, firstname, lastname, username, email, address, phone);
+            fetchClientListIntoTable();
+
+            AddUserBtn.setEnabled(true);
+            DeleteUserBtn.setEnabled(true);
+            PassInput.setEnabled(true);
+
+            // Zmieniamy tekst na przycisku Edytuj na Zapisz
+            EditUserBtn.setText("Edytuj");
+
+        } else {
+
+            // Wyświetlamy okno dialogowe z polem tekstowym
+            String inputValue = JOptionPane.showInputDialog("Podaj ID klienta:");
+
+            // Sprawdzamy, czy wartość została wprowadzona
+            if (inputValue != null && !inputValue.isEmpty()) {
+                // Parsujemy wartość do liczby całkowitej
+                int id = Integer.parseInt(inputValue);
+                edit_user_id = id;
+                // Przeszukujemy tabelę w poszukiwaniu wiersza o podanym ID
+                DefaultTableModel model = (DefaultTableModel) ClientsTable.getModel();
+                int rowIndex = -1;
+
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    System.out.println("Comparing ID " + id + " with " + model.getValueAt(i, 0));
+                    if (String.valueOf(id).equals(model.getValueAt(i, 0))) {
+                        rowIndex = i;
+                        break;
+                    }
+                }
+
+                // Jeśli znaleziono wiersz, pobieramy dane z tabeli
+                if (rowIndex >= 0) {
+                    Object[] rowData = new Object[model.getColumnCount()];
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        rowData[j] = model.getValueAt(rowIndex, j);
+                    }
+
+                    // Przykładowe wykorzystanie pobranych danych
+                    String username = (String) rowData[1];
+                    String email = (String) rowData[2];
+                    String phone = (String) rowData[3];
+                    String address = (String) rowData[4];
+                    String firstname = (String) rowData[5];
+                    String lastname = (String) rowData[6];
+
+                    // Wyświetlamy dane w polach tekstowych
+                    FirstnameInput.setText(firstname);
+                    LastnameInput.setText(lastname);
+                    UsernameInput.setText(username);
+                    EmailInput.setText(email);
+                    AddressInput.setText(address);
+                    PhoneInput.setText(phone);
+
+                    // Wyłączamy przyciski Dodaj i Usuń
+                    AddUserBtn.setEnabled(false);
+                    DeleteUserBtn.setEnabled(false);
+                    PassInput.setEnabled(false);
+                    
+
+                    // Zmieniamy tekst na przycisku Edytuj na Zapisz
+                    EditUserBtn.setText("Zapisz");
+
+                } else {
+                    // Jeśli nie znaleziono wiersza, wyświetlamy odpowiedni komunikat
+                    JOptionPane.showMessageDialog(this, "Nie znaleziono samochodu o podanym ID", "Błąd", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_EditUserBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -302,10 +470,18 @@ public class addClientForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton AddUserBtn;
+    private javax.swing.JTextField AddressInput;
+    private javax.swing.JTable ClientsTable;
+    private javax.swing.JButton DeleteUserBtn;
+    private javax.swing.JButton EditUserBtn;
+    private javax.swing.JTextField EmailInput;
+    private javax.swing.JTextField FirstnameInput;
+    private javax.swing.JTextField LastnameInput;
+    private javax.swing.JTextField PassInput;
+    private javax.swing.JTextField PhoneInput;
+    private javax.swing.JButton ResetUserFormBtn;
+    private javax.swing.JTextField UsernameInput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
@@ -318,13 +494,5 @@ public class addClientForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

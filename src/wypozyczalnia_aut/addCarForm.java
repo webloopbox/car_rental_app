@@ -13,7 +13,7 @@ import static wypozyczalnia_aut.Main.controller;
 
 public class addCarForm extends javax.swing.JFrame {
 
-    public static int edit_id;
+    public static int edit_car_id;
 
     /**
      * Creates new form addCarForm
@@ -391,7 +391,7 @@ public class addCarForm extends javax.swing.JFrame {
                 availability_bool = false;
             }
 
-            controller.updateCar(edit_id, registration, brand, model, capacity, year, price, availability_bool);
+            controller.updateCar(edit_car_id, registration, brand, model, capacity, year, price, availability_bool);
             fetchCarListIntoTable();
 
             AddCarBtn.setEnabled(true);
@@ -409,7 +409,7 @@ public class addCarForm extends javax.swing.JFrame {
             if (inputValue != null && !inputValue.isEmpty()) {
                 // Parsujemy wartość do liczby całkowitej
                 int id = Integer.parseInt(inputValue);
-                edit_id = id;
+                edit_car_id = id;
                 // Przeszukujemy tabelę w poszukiwaniu wiersza o podanym ID
                 DefaultTableModel model = (DefaultTableModel) CarsTable.getModel();
                 int rowIndex = -1;
