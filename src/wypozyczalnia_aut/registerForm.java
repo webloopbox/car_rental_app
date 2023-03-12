@@ -1,12 +1,8 @@
 package wypozyczalnia_aut;
 
-import java.sql.*;  
+import helpers.Helpers;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -14,21 +10,20 @@ import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 public class registerForm extends javax.swing.JFrame {
-
     private Controller controller;
     
     public registerForm() {
         initComponents();
-        
+
         controller = Main.getController();
-        
+
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         ImageIcon icon = new ImageIcon(getClass().getResource("images/eye.png"));
-        
+
         jLabel_BannerRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/RegisterBanner.jpg")));
-        
-        Color backgroundColor = new Color(0,0,0,0);
+
+        Color backgroundColor = new Color(0, 0, 0, 0);
 
         TogglePassRegister.setBackground(backgroundColor);
         TogglePassRegister.setBorderPainted(false);
@@ -36,56 +31,54 @@ public class registerForm extends javax.swing.JFrame {
         TogglePassRegister.setFocusPainted(false);
         TogglePassRegister.setIcon(icon);
         TogglePassRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        
+
         ToggleRePassRegister.setBackground(backgroundColor);
         ToggleRePassRegister.setBorderPainted(false);
         ToggleRePassRegister.setContentAreaFilled(false);
         ToggleRePassRegister.setFocusPainted(false);
         ToggleRePassRegister.setIcon(icon);
         ToggleRePassRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
-       
+
         System.setProperty("BorderColor", "0xFFDF29");
-        Border titleRegister2 = BorderFactory.createMatteBorder(0,0,3,0,Color.getColor("BorderLoginColor"));
+        Border titleRegister2 = BorderFactory.createMatteBorder(0, 0, 3, 0, Color.getColor("BorderLoginColor"));
         titleRegister.setBorder(titleRegister2);
-        
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    
-    private static boolean isValidEmail(String email) {
-    String regex = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-    Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-    Matcher matcher = pattern.matcher(email);
-    return matcher.matches();
-    }
-    
+
     private void registerUser() {
-            String email = EmailInput.getText();
-            String pass = String.valueOf(PasswordInput.getPassword());
-            String rePass = String.valueOf(RePasswordInput.getPassword());
-            String username = UsernameInput.getText();
-            String firstname = FirstnameInput.getText();
-            String lastname = LastnameInput.getText();
-            String address = AddressInput.getText();
-            String phone = PhoneInput.getText();
-            
-            if(email.isEmpty() || pass.isEmpty() || rePass.isEmpty() || username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || address.isEmpty() || phone.isEmpty()) {
-                   JOptionPane.showMessageDialog(this, "Uzupełnij wszystkie pola", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
-                   return;
-            }
-            
-            if(!pass.equals(rePass)) {
-                 JOptionPane.showMessageDialog(this, "Hasła się nie zgadzają", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
-                   return;
-            }
-            
-            if(!this.isValidEmail(email)) {
-                 JOptionPane.showMessageDialog(this, "Email jest niepoprawny", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
-                   return;
-            }
-            
-            
-            controller.registerUser(this, email, pass, username, firstname, lastname, address, phone);
+        Helpers helpers = new Helpers();  
+        String email = EmailInput.getText();
+        String pass = String.valueOf(PasswordInput.getPassword());
+        String rePass = String.valueOf(RePasswordInput.getPassword());
+        String username = UsernameInput.getText();
+        String firstname = FirstnameInput.getText();
+        String lastname = LastnameInput.getText();
+        String address = AddressInput.getText();
+        String phone = PhoneInput.getText();
+
+        if (email.isEmpty() || pass.isEmpty() || rePass.isEmpty() || username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Uzupełnij wszystkie pola", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!pass.equals(rePass)) {
+            JOptionPane.showMessageDialog(this, "Hasła się nie zgadzają", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!helpers.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Email jest niepoprawny", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!helpers.isValidPolishPhoneNumber(phone)) {
+            JOptionPane.showMessageDialog(this, "Numer telefonu jest niepoprawny", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        controller.registerUser(this, email, pass, username, firstname, lastname, address, phone);
+        this.dispose();
     }
 
 //==================================================================================================
@@ -321,7 +314,7 @@ public class registerForm extends javax.swing.JFrame {
     private void TogglePassRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TogglePassRegisterActionPerformed
 
         if (TogglePassRegister.isSelected()) {
-            PasswordInput.setEchoChar((char)0);
+            PasswordInput.setEchoChar((char) 0);
         } else {
             PasswordInput.setEchoChar('*');
         }
@@ -329,7 +322,7 @@ public class registerForm extends javax.swing.JFrame {
 
     private void ToggleRePassRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToggleRePassRegisterActionPerformed
         if (ToggleRePassRegister.isSelected()) {
-            RePasswordInput.setEchoChar((char)0);
+            RePasswordInput.setEchoChar((char) 0);
         } else {
             RePasswordInput.setEchoChar('*');
         }

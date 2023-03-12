@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -37,11 +36,10 @@ public class Controller {
     }
 
     public void loginUser(loginForm loginForm, JTextField LoginInput, JPasswordField PassInput) {
-        System.out.println(" RENDER ");
         try {
 
             String username = LoginInput.getText();
-            String password = PassInput.getText();
+            char[] password = PassInput.getPassword();
 
             out.println("LOGIN_USER");
             out.println(username);
@@ -98,7 +96,7 @@ public class Controller {
         }
     }
 
-    public void registerUser(JFrame registerForm, String email, String password, String username, String firstname, String lastname, String address, String phone) {
+    public void registerUser(JFrame form, String email, String password, String username, String firstname, String lastname, String address, String phone) {
 
         try {
             out.println("REGISTER_USER");
@@ -115,16 +113,10 @@ public class Controller {
             String size = in.readLine();
             if (size != null) {
                 System.out.printf(size);
-                if (this.id == null) {
-                    registerForm.dispose();
-                    DashboardUser dashboardUser = new DashboardUser();
-                    dashboardUser.show();
-                }
-
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(registerForm,
+            JOptionPane.showMessageDialog(form,
                     "Nie udało się zarejestronwać",
                     "Spróbuj ponownie",
                     JOptionPane.ERROR_MESSAGE);
@@ -211,9 +203,9 @@ public class Controller {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) {
-        System.out.println("----------------------- WORKS?"+phone);
+        System.out.println("----------------------- WORKS?" + phone);
         try {
             out.println("UPDATE_USER " + userId + " " + firstname + " " + lastname + " " + username + " " + email + " " + address + " " + phone);
             String response = in.readLine();

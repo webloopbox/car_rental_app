@@ -1,16 +1,15 @@
 package wypozyczalnia_aut;
 
+import helpers.Helpers;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static wypozyczalnia_aut.Main.controller;
 
 public class addClientForm extends javax.swing.JFrame {
-    
+
     public static int edit_user_id;
 
     public addClientForm() {
@@ -45,14 +44,8 @@ public class addClientForm extends javax.swing.JFrame {
         ClientsTable.setModel(model);
     }
 
-    private static boolean isValidEmail(String email) {
-        String regex = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
     private void addUser() {
+        Helpers helpers = new Helpers();
         String firstname = FirstnameInput.getText();
         String lastname = LastnameInput.getText();
         String username = UsernameInput.getText();
@@ -66,8 +59,13 @@ public class addClientForm extends javax.swing.JFrame {
             return;
         }
 
-        if (!this.isValidEmail(email)) {
+        if (!helpers.isValidEmail(email)) {
             JOptionPane.showMessageDialog(this, "Email jest niepoprawny", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!helpers.isValidPolishPhoneNumber(phone)) {
+            JOptionPane.showMessageDialog(this, "Numer telefonu jest niepoprawny", "Spróbuj ponownie", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -421,7 +419,6 @@ public class addClientForm extends javax.swing.JFrame {
                     AddUserBtn.setEnabled(false);
                     DeleteUserBtn.setEnabled(false);
                     PassInput.setEnabled(false);
-                    
 
                     // Zmieniamy tekst na przycisku Edytuj na Zapisz
                     EditUserBtn.setText("Zapisz");

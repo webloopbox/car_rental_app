@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package wypozyczalnia_aut;
 
 import java.util.List;
@@ -15,9 +11,6 @@ public class addCarForm extends javax.swing.JFrame {
 
     public static int edit_car_id;
 
-    /**
-     * Creates new form addCarForm
-     */
     public addCarForm() {
         initComponents();
 
