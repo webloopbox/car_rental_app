@@ -205,7 +205,6 @@ public class Controller {
     }
 
     public void updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) {
-        System.out.println("----------------------- WORKS?" + phone);
         try {
             out.println("UPDATE_USER " + userId + " " + firstname + " " + lastname + " " + username + " " + email + " " + address + " " + phone);
             String response = in.readLine();
@@ -246,6 +245,60 @@ public class Controller {
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void addReservation(String firstname, String lastname, String registration, String rentFrom, String rentTo) {
+        try {
+            out.printf("ADD_RESERVATION %s %s %s %s %s%n", firstname, lastname, registration, rentFrom, rentTo);
+            if (in.readLine().equals("Error")) {
+                throw new RuntimeException("Failed to add reservation");
+            } else {
+                JOptionPane.showMessageDialog(null, "Rezerwacja dodana pomyślnie", "Sukces", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Throwable ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Nie udało się dodać rezerwacji (błąd serwera)", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }
+
+    public List<Map<String, Object>> getAllReservations() {
+        List<Map<String, Object>> data = new ArrayList<>();
+
+        try {
+            out.println("GET_ALL_RESERVATIONS");
+            int size = Integer.parseInt(in.readLine());
+            if (size > 0) {
+                for (int i = 0; i < size; i++) {
+
+                    Map<String, Object> row = new HashMap<>();
+                    row.put("id", in.readLine());
+                    row.put("firstname", in.readLine());
+                    row.put("lastname", in.readLine());
+                    row.put("registration", in.readLine());
+                    row.put("rentFrom", in.readLine());
+                    row.put("rentTo", in.readLine());
+                    row.put("price", in.readLine());
+                    data.add(row);
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return data;
+    }
+
+    public void deleteReservation(int reservationId) {
+        try {
+            out.printf("DELETE_RESERVATION %d\n", reservationId);
+            String response = in.readLine();
+            if (response.equals("Reservation deleted successfully")) {
+                // Do something
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }

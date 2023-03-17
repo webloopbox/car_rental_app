@@ -1,18 +1,48 @@
 package wypozyczalnia_aut;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import static wypozyczalnia_aut.Main.controller;
 
 public class rentCarFormAdmin extends javax.swing.JFrame {
 
     public rentCarFormAdmin() {
         initComponents();
-        
-        
-        jDateChooser2.setMinSelectableDate(new Date());
-        jDateChooser3.setMinSelectableDate(new Date());
-        
+
+        rentFromInput.setMinSelectableDate(new Date());
+        rentToInput.setMinSelectableDate(new Date());
+
+        fetchReservationListIntoTable();
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    private void fetchReservationListIntoTable() {
+        List<Map<String, Object>> reservationsData = controller.getAllReservations();
+
+        // Convert the list of maps to a two-dimensional array of objects (in order to display it inside ClientsTable)
+        Object[][] data = new Object[reservationsData.size()][];
+        for (int i = 0; i < reservationsData.size(); i++) {
+            Map<String, Object> user = reservationsData.get(i);
+            data[i] = new Object[]{
+                user.get("id"),
+                user.get("firstname"),
+                user.get("lastname"),
+                user.get("registration"),
+                user.get("rentFrom"),
+                user.get("rentTo"),
+                user.get("price"),};
+        }
+
+        // Set the data and column names as the model of the JTable
+        String[] columnNames = new String[]{"ID", "Imię", "Nazwisko", "Nr. rejestracji", "Data wypożyczenia", "Data zwrotu", "Koszt(zł)"};
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        ReservationTable.setModel(model);
     }
 
     @SuppressWarnings("unchecked")
@@ -23,7 +53,7 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        ReservationTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -31,13 +61,13 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jDateChooser3 = new com.toedter.calendar.JDateChooser();
+        firstnameInput = new javax.swing.JTextField();
+        surnameInput = new javax.swing.JTextField();
+        regInput = new javax.swing.JTextField();
+        addReservationBtn = new javax.swing.JButton();
+        removeReservationBtn = new javax.swing.JButton();
+        rentFromInput = new com.toedter.calendar.JDateChooser();
+        rentToInput = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Zarządzaj rezerwacjami");
@@ -69,7 +99,7 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        ReservationTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -80,7 +110,7 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
                 "Imię", "Nazwisko", "Nr. rejestracji", "Data wypożyczenia", "Data zwrotu", "Koszt"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(ReservationTable);
 
         jLabel3.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -110,9 +140,23 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Data zwrotu:");
 
-        jButton1.setText("Dodaj");
+        addReservationBtn.setText("Dodaj");
+        addReservationBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addReservationBtnActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Usuń");
+        removeReservationBtn.setText("Usuń");
+        removeReservationBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeReservationBtnActionPerformed(evt);
+            }
+        });
+
+        rentFromInput.setDateFormatString("dd/MM/yyyy");
+
+        rentToInput.setDateFormatString("dd/MM/yyyy");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -123,9 +167,9 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addReservationBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(removeReservationBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
@@ -135,14 +179,14 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
                             .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)))
+                            .addComponent(firstnameInput)
+                            .addComponent(surnameInput)
+                            .addComponent(regInput)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(53, 53, 53)
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(rentToInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11)
@@ -150,7 +194,7 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
                                 .addGap(110, 110, 110)
                                 .addComponent(jLabel8)))
                         .addGap(1, 1, 1)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(rentFromInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -170,29 +214,29 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(firstnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(surnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(regInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                            .addComponent(rentFromInput, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(15, 15, 15)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
-                            .addComponent(jDateChooser3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(rentToInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(removeReservationBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                            .addComponent(addReservationBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -209,6 +253,35 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addReservationBtnActionPerformed
+        String firstname = firstnameInput.getText();
+        String surname = surnameInput.getText();
+        String registration = regInput.getText();
+        Date rentFrom = rentFromInput.getDate();
+        Date rentTo = rentToInput.getDate();
+
+        if (rentTo.before(rentFrom)) {
+            JOptionPane.showMessageDialog(null, "Wprowadź prawidłową datę oddania.");
+            return;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedRentFrom = dateFormat.format(rentFrom);
+        String formattedRentTo = dateFormat.format(rentTo);
+
+        System.out.println("formattedRentFrom " + formattedRentFrom);
+        System.out.println("formattedRentTo " + formattedRentTo);
+        controller.addReservation(firstname, surname, registration, formattedRentFrom, formattedRentTo);
+        fetchReservationListIntoTable();
+    }//GEN-LAST:event_addReservationBtnActionPerformed
+
+    private void removeReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeReservationBtnActionPerformed
+        String inputValue = JOptionPane.showInputDialog("Podaj ID rezerwacji:");
+        int id = Integer.parseInt(inputValue);
+        controller.deleteReservation(id);
+        fetchReservationListIntoTable();
+    }//GEN-LAST:event_removeReservationBtnActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -243,10 +316,9 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private com.toedter.calendar.JDateChooser jDateChooser3;
+    private javax.swing.JTable ReservationTable;
+    private javax.swing.JButton addReservationBtn;
+    private javax.swing.JTextField firstnameInput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -258,9 +330,10 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField regInput;
+    private javax.swing.JButton removeReservationBtn;
+    private com.toedter.calendar.JDateChooser rentFromInput;
+    private com.toedter.calendar.JDateChooser rentToInput;
+    private javax.swing.JTextField surnameInput;
     // End of variables declaration//GEN-END:variables
 }
