@@ -1,19 +1,57 @@
 package wypozyczalnia_aut;
 
+import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableCellRenderer;
+import static wypozyczalnia_aut.Main.controller;
 
 public class rentCarFormClient extends javax.swing.JFrame {
 
+    static int selectedCarRow;
+    static String selectedCarRegistraion;
+
     public rentCarFormClient() {
         initComponents();
-        
-        
-        jDateChooser1.setMinSelectableDate(new Date());
-        jDateChooser2.setMinSelectableDate(new Date());
-        
-        
+
+        rentFromInput.setMinSelectableDate(new Date());
+        rentToInput.setMinSelectableDate(new Date());
+
+        firstnameInput.setText(controller.getUserData(controller.id, "firstname")[0]);
+        surnameInput.setText(controller.getUserData(controller.id, "lastname")[0]);
+        emailInput.setText(controller.getUserData(controller.id, "email")[0]);
+        phoneInput.setText(controller.getUserData(controller.id, "phone")[0]);
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void showPrice() {
+        
+        Date rentFrom = rentFromInput.getDate();
+        Date rentTo = rentToInput.getDate();
+
+        if (rentFrom == null || rentTo == null) {
+            return;
+        } 
+
+        LocalDate rentFromDate = rentFrom.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate rentToDate = rentTo.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        long rentalDays = ChronoUnit.DAYS.between(rentFromDate, rentToDate);
+        System.out.println("rentalDays: " + rentalDays);
+        double totalPrice = Double.parseDouble(currentPriceLabel.getText()) * (double) rentalDays;
+        totalCostText.setText(String.valueOf(totalPrice) + " " + "zł");
+
     }
 
     @SuppressWarnings("unchecked")
@@ -31,23 +69,29 @@ public class rentCarFormClient extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        firstnameInput = new javax.swing.JTextField();
+        phoneInput = new javax.swing.JTextField();
+        surnameInput = new javax.swing.JTextField();
+        emailInput = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        chooseMenuBtn = new javax.swing.JButton();
+        currentBrandLabel = new javax.swing.JLabel();
+        currentModelLabel = new javax.swing.JLabel();
+        currentCapacityLabel = new javax.swing.JLabel();
+        lorem = new javax.swing.JLabel();
+        currentPriceLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jButton1 = new javax.swing.JButton();
+        rentFromInput = new com.toedter.calendar.JDateChooser();
+        rentToInput = new com.toedter.calendar.JDateChooser();
+        totalCostText = new javax.swing.JLabel();
+        orderBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Zarezerwuj samochód");
@@ -118,7 +162,7 @@ public class rentCarFormClient extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE))
+                        .addComponent(emailInput, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel8)
@@ -126,9 +170,9 @@ public class rentCarFormClient extends javax.swing.JFrame {
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField3)))
+                            .addComponent(phoneInput)
+                            .addComponent(firstnameInput)
+                            .addComponent(surnameInput)))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -140,19 +184,19 @@ public class rentCarFormClient extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(firstnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(surnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(phoneInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(emailInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
 
@@ -177,7 +221,16 @@ public class rentCarFormClient extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Marka:");
 
-        jButton2.setText("Wybierz samochód z listy");
+        chooseMenuBtn.setText("Wybierz samochód z listy");
+        chooseMenuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseMenuBtnActionPerformed(evt);
+            }
+        });
+
+        lorem.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
+        lorem.setForeground(new java.awt.Color(0, 0, 0));
+        lorem.setText("Cena/dzień:");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -187,13 +240,19 @@ public class rentCarFormClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                    .addComponent(chooseMenuBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel14)
                             .addComponent(jLabel11)
-                            .addComponent(jLabel14))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel12)
+                            .addComponent(lorem))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(currentPriceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(currentCapacityLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(currentModelLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(currentBrandLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -202,13 +261,23 @@ public class rentCarFormClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(chooseMenuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel14)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(currentBrandLabel))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel11)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(currentModelLabel))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel12)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(currentCapacityLabel))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lorem)
+                    .addComponent(currentPriceLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -229,7 +298,19 @@ public class rentCarFormClient extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel13.setText("Koszty:");
+        jLabel13.setText("Łączny koszt:");
+
+        rentFromInput.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                rentFromInputPropertyChange(evt);
+            }
+        });
+
+        rentToInput.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                rentToInputPropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -242,9 +323,11 @@ public class rentCarFormClient extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalCostText)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(rentFromInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rentToInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -253,17 +336,24 @@ public class rentCarFormClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(rentFromInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(rentToInput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel13)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(totalCostText))
                 .addGap(26, 26, 26))
         );
 
-        jButton1.setText("Zarezerwuj");
+        orderBtn.setText("Zarezerwuj");
+        orderBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -274,10 +364,13 @@ public class rentCarFormClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(orderBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(80, 80, 80)))
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -291,7 +384,7 @@ public class rentCarFormClient extends javax.swing.JFrame {
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(orderBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(56, Short.MAX_VALUE))
         );
 
@@ -328,6 +421,137 @@ public class rentCarFormClient extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void orderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderBtnActionPerformed
+        String firstname = firstnameInput.getText();
+        String surname = surnameInput.getText();
+        Date rentFrom = rentFromInput.getDate();
+        Date rentTo = rentToInput.getDate();
+
+        if (rentFrom == null || rentTo == null) {
+            JOptionPane.showMessageDialog(null, "Wprowadź prawidłową datę oddania.");
+            return;
+        } else if (rentTo.before(rentFrom)) {
+            JOptionPane.showMessageDialog(null, "Wprowadź prawidłową datę oddania.");
+            return;
+        } else if (selectedCarRegistraion == null) {
+            JOptionPane.showMessageDialog(null, "Nie wybrano samochodu.");
+            return;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedRentFrom = dateFormat.format(rentFrom);
+        String formattedRentTo = dateFormat.format(rentTo);
+
+        controller.addReservation(firstname, surname, selectedCarRegistraion, formattedRentFrom, formattedRentTo);
+    }//GEN-LAST:event_orderBtnActionPerformed
+
+    private void chooseMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseMenuBtnActionPerformed
+        List<Map<String, Object>> carData = null;
+        try {
+            carData = controller.getAllCars();
+            carData = carData.stream()
+                    .filter(car -> !car.get("availability").toString().equals("false"))
+                    .collect(Collectors.toList()); // filter out cars with availability equal to 0
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+// create a two-dimensional array to hold the car data
+        Object[][] data = new Object[carData.size()][5];
+        for (int i = 0; i < carData.size(); i++) {
+            Map<String, Object> car = carData.get(i);
+            data[i][0] = car.get("reg_number");
+            data[i][1] = car.get("brand");
+            data[i][2] = car.get("model");
+            data[i][3] = car.get("engine_capacity");
+            data[i][4] = car.get("price");
+        }
+
+        // create an array to hold the column names
+        String[] columnNames = {"Nr. rejestracji", "Model", "Model", "Pojemność silnika", "Cena/dzień"};
+
+        // create a JTable with the data and column names
+        JTable table = new JTable(data, columnNames);
+
+        table.setFocusable(false);
+        table.setDefaultEditor(Object.class, null);
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setBackground(Color.WHITE);
+        table.setDefaultRenderer(Object.class, renderer);
+
+        table.setSelectionBackground(Color.YELLOW);
+
+        // add a list selection listener to highlight the selected row
+        table.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow >= 0) {
+                table.setRowSelectionInterval(selectedRow, selectedRow);
+            }
+        });
+
+        // create a JScrollPane to hold the JTable
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // display the dialog box with the table inside
+        int result = JOptionPane.showConfirmDialog(null, scrollPane, "Wybierz samochód", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            // user clicked OK, get the selected row
+            int selectedRow = table.getSelectedRow();
+
+            if (selectedRow < 0) {
+                return;
+            }
+
+            selectedCarRow = selectedRow;
+            selectedCarRegistraion = (String) table.getValueAt(selectedRow, 0);
+
+            currentBrandLabel.setText((String) table.getValueAt(selectedRow, 1));
+            currentModelLabel.setText((String) table.getValueAt(selectedRow, 2));
+            currentCapacityLabel.setText((String) table.getValueAt(selectedRow, 3));
+            currentPriceLabel.setText((String) table.getValueAt(selectedRow, 4));
+
+            showPrice();
+
+        }
+    }//GEN-LAST:event_chooseMenuBtnActionPerformed
+
+    private void rentToInputPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_rentToInputPropertyChange
+        Date rentFrom = rentFromInput.getDate();
+        Date rentTo = rentToInput.getDate();
+
+        if (rentFrom == null || rentTo == null) {
+            return;
+        } else if (rentTo != null && rentTo.before(rentFrom)) {
+            rentToInput.setDate(null);
+            JOptionPane.showMessageDialog(null, "Wprowadź prawidłową datę oddania.");
+            return;
+        } else {
+            String priceStr = currentPriceLabel.getText();
+            if (priceStr != null && !priceStr.isEmpty()) {
+                showPrice();
+            }
+        }
+    }//GEN-LAST:event_rentToInputPropertyChange
+
+    private void rentFromInputPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_rentFromInputPropertyChange
+        Date rentFrom = rentFromInput.getDate();
+        Date rentTo = rentToInput.getDate();
+
+        if (rentFrom != null && rentTo != null) {
+            if (rentTo != null && rentTo.before(rentFrom)) {
+                rentFromInput.setDate(null);
+                JOptionPane.showMessageDialog(null, "Wprowadź prawidłową datę oddania.");
+                return;
+            } else {
+                String priceStr = currentPriceLabel.getText();
+                if (priceStr != null && !priceStr.isEmpty()) {
+                    System.out.println("123123");
+                    showPrice();
+                }
+            }
+        }
+    }//GEN-LAST:event_rentFromInputPropertyChange
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -361,10 +585,13 @@ public class rentCarFormClient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JButton chooseMenuBtn;
+    private javax.swing.JLabel currentBrandLabel;
+    private javax.swing.JLabel currentCapacityLabel;
+    private javax.swing.JLabel currentModelLabel;
+    private javax.swing.JLabel currentPriceLabel;
+    private javax.swing.JTextField emailInput;
+    private javax.swing.JTextField firstnameInput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -385,9 +612,12 @@ public class rentCarFormClient extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel lorem;
+    private javax.swing.JButton orderBtn;
+    private javax.swing.JTextField phoneInput;
+    private com.toedter.calendar.JDateChooser rentFromInput;
+    private com.toedter.calendar.JDateChooser rentToInput;
+    private javax.swing.JTextField surnameInput;
+    private javax.swing.JLabel totalCostText;
     // End of variables declaration//GEN-END:variables
 }

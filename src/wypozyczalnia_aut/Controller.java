@@ -301,4 +301,31 @@ public class Controller {
 
     }
 
+    public List<Map<String, Object>> getUserReservations(int userId) {
+        List<Map<String, Object>> data = new ArrayList<>();
+
+        try {
+            out.println("GET_USER_RESERVATIONS");
+            out.println(userId);
+            int size = Integer.parseInt(in.readLine());
+            if (size > 0) {
+                for (int i = 0; i < size; i++) {
+                    Map<String, Object> row = new HashMap<>();
+                    row.put("reg_number", in.readLine());
+                    row.put("brand", in.readLine());
+                    row.put("model", in.readLine());
+                    row.put("year", in.readLine());
+                    row.put("capacity", in.readLine());
+                    row.put("rent_from", in.readLine());
+                    row.put("rent_to", in.readLine());
+                    row.put("price", in.readLine());
+                    data.add(row);
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return data;
+    }
+
 }

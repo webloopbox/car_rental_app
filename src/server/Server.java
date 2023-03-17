@@ -329,6 +329,32 @@ public class Server {
         }
     }
 
+    public static List<Map<String, Object>> getReservationsForUser(int userId) throws SQLException {
+        List<Map<String, Object>> data = new ArrayList<>();
+        String sql = "SELECT c.reg_number, c.brand, c.model, c.year, c.engine_capacity, uc.rent_from, uc.rent_to, c.price "
+                + "FROM users_cars uc "
+                + "JOIN users u ON uc.user_id = u.id "
+                + "JOIN cars c ON uc.car_id = c.id "
+                + "WHERE uc.user_id = ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("reg_number", rs.getString("reg_number"));
+                row.put("brand", rs.getString("brand"));
+                row.put("model", rs.getString("model"));
+                row.put("year", rs.getInt("year"));
+                row.put("capacity", rs.getDouble("engine_capacity"));
+                row.put("rent_from", rs.getDate("rent_from"));
+                row.put("rent_to", rs.getDate("rent_to"));
+                row.put("price", rs.getDouble("price"));
+                data.add(row);
+            }
+        }
+        return data;
+    }
+
 }
 
 class ClientHandler implements Runnable {
@@ -517,6 +543,20 @@ class ClientHandler implements Runnable {
                         out.println("Reservation deleted successfully");
                     } catch (SQLException e) {
                         out.println("Error");
+                    }
+                } else if (line.equals("GET_USER_RESERVATIONS")) {
+                    int userId = Integer.parseInt(in.readLine());
+                    List<Map<String, Object>> data = Server.getReservationsForUser(userId);
+                    out.println(data.size());
+                    for (Map<String, Object> map : data) {
+                        out.println(map.get("reg_number"));
+                        out.println(map.get("brand"));
+                        out.println(map.get("model"));
+                        out.println(map.get("year"));
+                        out.println(map.get("capacity"));
+                        out.println(map.get("rent_from"));
+                        out.println(map.get("rent_to"));
+                        out.println(map.get("price"));
                     }
                 } else {
                     out.println("Invalid command");

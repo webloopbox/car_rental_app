@@ -1,13 +1,49 @@
 package wypozyczalnia_aut;
 
+import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import static wypozyczalnia_aut.Main.controller;
 
 public class clientCars extends javax.swing.JFrame {
 
     public clientCars() {
         initComponents();
-        
+
+        fetchUserReservationsIntoTable();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    private void fetchUserReservationsIntoTable() {
+        // Get the car data from the server
+        List<Map<String, Object>> carData = null;
+        try {
+            carData = controller.getUserReservations(controller.id);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        // Convert the list of maps to a two-dimensional array of objects
+        Object[][] data = new Object[carData.size()][];
+        for (int i = 0; i < carData.size(); i++) {
+            Map<String, Object> car = carData.get(i);
+            data[i] = new Object[]{
+                car.get("reg_number"),
+                car.get("brand"),
+                car.get("model"),
+                car.get("year"),
+                car.get("capacity"),
+                car.get("rent_from"),
+                car.get("rent_to"),
+                car.get("price")
+            };
+        }
+
+        // Set the data and column names as the model of the JTable
+        String[] columnNames = new String[]{"Nr. rejestracji", "Marka", "Model", "Rocznik", "Pojemność silnika", "Data wypożyczenia", "Data oddania", "Cena"};
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        reservationsTable.setModel(model);
     }
 
     @SuppressWarnings("unchecked")
@@ -18,7 +54,7 @@ public class clientCars extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        reservationsTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Twoje samochody");
@@ -49,7 +85,7 @@ public class clientCars extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        reservationsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
@@ -60,7 +96,7 @@ public class clientCars extends javax.swing.JFrame {
                 "Numer rej.", "Marka", "Model", "Rok produkcji", "Pojemność", "Data wypożyczenia", "Data zwrotu", "Koszt"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(reservationsTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,6 +168,6 @@ public class clientCars extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable reservationsTable;
     // End of variables declaration//GEN-END:variables
 }
