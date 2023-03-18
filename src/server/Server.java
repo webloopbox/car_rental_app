@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,8 +40,18 @@ public class Server {
         }
     }
 
-    public static void addUser(String email, String password, String username, String firstname, String lastname, String address, String phone, String role) throws SQLException {
-        String sql = "INSERT INTO users (username, password, email, phone, address, firstname, lastname, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public static int addUser(String email, String password, String username, String firstname, String lastname, String address, String phone, String role) throws SQLException {
+        String sql = "SELECT * FROM users WHERE username = ? OR email = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, username);
+        ps.setString(2, email);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return 0;
+        }
+        
+        sql = "INSERT INTO users (username, password, email, phone, address, firstname, lastname, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepareStatement = con.prepareStatement(sql);
 
         prepareStatement.setString(1, username);
@@ -53,6 +64,8 @@ public class Server {
         prepareStatement.setString(8, role);
 
         prepareStatement.executeUpdate();
+        
+        return 1;
     }
 
     public static List<Map<String, Object>> getLoginData(String username, String password) throws SQLException {
@@ -355,6 +368,45 @@ public class Server {
         return data;
     }
 
+    public static Map<String, Object> getReservationsSummaryForUser(int userId) throws SQLException {
+        Map<String, Object> summary = new HashMap<>();
+
+        // Get reservations for user
+        List<Map<String, Object>> reservations = getReservationsForUser(userId);
+
+        if (reservations.isEmpty()) {
+            System.out.println("Uzytkownik nie posiada zadnych rezerwacji.");
+            return null;
+        } else {
+
+            // Calculate total number of reservations
+            int numReservations = reservations.size();
+            summary.put("numReservations", numReservations);
+
+            // Calculate total cost of reservations
+            double totalCost = 0;
+            java.sql.Date nearestReturnDate = null;
+            for (Map<String, Object> reservation : reservations) {
+                double price = (double) reservation.get("price");
+                java.sql.Date rentFrom = (java.sql.Date) reservation.get("rent_from");
+                java.sql.Date rentTo = (java.sql.Date) reservation.get("rent_to");
+                long diffInMillies = Math.abs(rentTo.getTime() - rentFrom.getTime());
+                long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                double reservationCost = diffInDays * price;
+                totalCost += reservationCost;
+
+                // Find nearest return date
+                if (nearestReturnDate == null || rentTo.before(nearestReturnDate)) {
+                    nearestReturnDate = rentTo;
+                }
+            }
+
+            summary.put("totalCost", totalCost);
+            summary.put("nearestReturnDate", nearestReturnDate);
+        }
+        return summary;
+    }
+
 }
 
 class ClientHandler implements Runnable {
@@ -383,8 +435,8 @@ class ClientHandler implements Runnable {
                     String address = in.readLine();
                     String phone = in.readLine();
 
-                    Server.addUser(email, password, username, firstname, lastname, address, phone, "user");
-                    out.println("Data added successfully");
+                    int resStatus = Server.addUser(email, password, username, firstname, lastname, address, phone, "user");
+                    out.println(resStatus);
 
                 } else if (line.equals("LOGIN_USER")) {
 
@@ -558,6 +610,26 @@ class ClientHandler implements Runnable {
                         out.println(map.get("rent_to"));
                         out.println(map.get("price"));
                     }
+                } else if (line.equals("GET_USER_SUMMARY")) {
+                    int userId = Integer.parseInt(in.readLine());
+                    Map<String, Object> summary = Server.getReservationsSummaryForUser(userId);
+                    if (summary == null) {
+                        // neccessary to handle inside Controller mathod as unsuccessfull response (no data found)
+                        out.println(0);
+                    } else {
+                        out.println(summary.size());
+                        int numReservations = (int) summary.get("numReservations");
+                        double totalCost = (double) summary.get("totalCost");
+                        java.sql.Date nearestReturnDate = (java.sql.Date) summary.get("nearestReturnDate");
+
+                        out.println(numReservations);
+                        out.println(totalCost);
+                        out.println(nearestReturnDate);
+
+                        System.out.println("numReservations: " + summary.get("numReservations"));
+                        System.out.println("totalCost: " + summary.get("totalCost"));
+                    }
+
                 } else {
                     out.println("Invalid command");
                 }
@@ -566,7 +638,7 @@ class ClientHandler implements Runnable {
         } catch (SocketException e) {
             // Connection reset by client
             System.out.println("Client disconnected: " + s);
-        } catch (IOException | SQLException ex) {
+        } catch (IOException | SQLException | NullPointerException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);

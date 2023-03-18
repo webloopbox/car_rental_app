@@ -77,8 +77,8 @@ public class registerForm extends javax.swing.JFrame {
             return;
         }
 
-        controller.registerUser(this, email, pass, username, firstname, lastname, address, phone);
-        this.dispose();
+        int status = controller.registerUser(this, email, pass, username, firstname, lastname, address, phone);
+        if(status == 1) this.dispose();
     }
 
 //==================================================================================================

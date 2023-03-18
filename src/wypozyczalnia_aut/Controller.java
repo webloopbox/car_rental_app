@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import server.Server;
+import static wypozyczalnia_aut.Main.controller;
 
 public class Controller {
 
@@ -96,7 +97,7 @@ public class Controller {
         }
     }
 
-    public void registerUser(JFrame form, String email, String password, String username, String firstname, String lastname, String address, String phone) {
+    public int registerUser(JFrame form, String email, String password, String username, String firstname, String lastname, String address, String phone) {
 
         try {
             out.println("REGISTER_USER");
@@ -110,10 +111,17 @@ public class Controller {
             out.println(address);
             out.println(phone);
 
-            String size = in.readLine();
-            if (size != null) {
-                System.out.printf(size);
+            String res = in.readLine();
+            
+            if (Integer.parseInt(res) == 0) {
+                JOptionPane.showMessageDialog(form,
+                    "Użytkownik o tej samej nazwie użytkownika lub adresie e-mail już istnieje",
+                    "Niepowodzenie",
+                    JOptionPane.ERROR_MESSAGE);
+                return 0;
             }
+            
+            return 1;
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(form,
@@ -123,6 +131,9 @@ public class Controller {
             System.out.println("Nie udało się wykonać rejestracji");
             System.out.println(e);
         }
+        
+        return 0;
+        
     }
 
     /*
@@ -322,6 +333,34 @@ public class Controller {
                     data.add(row);
                 }
             }
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return data;
+    }
+
+    public List<Map<String, Object>> getUserSummary(int userId) {
+        List<Map<String, Object>> data = new ArrayList<>();
+        try {
+            out.println("GET_USER_SUMMARY");
+            out.println(userId);
+            int size = Integer.parseInt(in.readLine());
+            System.out.println("controller.id: " + controller.id);
+            if (size > 0) {
+                int numReservations = Integer.parseInt(in.readLine());
+                double totalCost = Double.parseDouble(in.readLine());
+                String nearestReturnDateStr = in.readLine();
+                java.sql.Date nearestReturnDate = null;
+                if (nearestReturnDateStr != null && !nearestReturnDateStr.isEmpty()) {
+                    nearestReturnDate = java.sql.Date.valueOf(nearestReturnDateStr);
+                }
+                Map<String, Object> summary = new HashMap<>();
+                summary.put("numReservations", numReservations);
+                summary.put("totalCost", totalCost);
+                summary.put("nearestReturnDate", nearestReturnDate);
+                data.add(summary);
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
