@@ -1,10 +1,7 @@
 package wypozyczalnia_aut;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static wypozyczalnia_aut.Main.controller;
 
@@ -16,7 +13,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel_AdminIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/panelIcon.png")));
     }
 
-    public void fetchCarStats() {
+    public static void fetchCarStats() {
         List<Map<String, Object>> carData = null;
         try {
             carData = controller.getAllCars();
@@ -59,7 +56,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1_Clients_Admin = new javax.swing.JButton();
-        jButton_Logout = new javax.swing.JButton();
+        logoutBtn = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5_Cars_Admin = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -100,10 +97,15 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jButton_Logout.setText("Wyloguj się");
-        jButton_Logout.addMouseListener(new java.awt.event.MouseAdapter() {
+        logoutBtn.setText("Wyloguj się");
+        logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton_LogoutMouseClicked(evt);
+                logoutBtnMouseClicked(evt);
+            }
+        });
+        logoutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutBtnActionPerformed(evt);
             }
         });
 
@@ -137,7 +139,7 @@ public class Dashboard extends javax.swing.JFrame {
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 8, Short.MAX_VALUE))
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jButton_Logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5_Cars_Admin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -160,7 +162,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1_Clients_Admin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
-                .addComponent(jButton_Logout, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
         );
 
@@ -306,9 +308,9 @@ public class Dashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton_LogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_LogoutMouseClicked
+    private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtnMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_LogoutMouseClicked
+    }//GEN-LAST:event_logoutBtnMouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -334,6 +336,12 @@ public class Dashboard extends javax.swing.JFrame {
         addClientAdmin.pack();
         addClientAdmin.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton1_Clients_AdminActionPerformed
+
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
+        loginForm loginForm = new loginForm();
+        loginForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logoutBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -371,11 +379,10 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel availableCarsLabel;
+    public static javax.swing.JLabel availableCarsLabel;
     private javax.swing.JButton jButton1_Clients_Admin;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5_Cars_Admin;
-    private javax.swing.JButton jButton_Logout;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -387,7 +394,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JLabel totalPriceLabel;
-    private javax.swing.JLabel unavailableCarsLabel;
+    private javax.swing.JButton logoutBtn;
+    public static javax.swing.JLabel totalPriceLabel;
+    public static javax.swing.JLabel unavailableCarsLabel;
     // End of variables declaration//GEN-END:variables
 }

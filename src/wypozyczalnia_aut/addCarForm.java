@@ -67,6 +67,7 @@ public class addCarForm extends javax.swing.JFrame {
 
         controller.insertCar(registration, brand, model, capacity, year, price, availability_bool);
         fetchCarListIntoTable();
+        Dashboard.fetchCarStats();
     }
 
     /**
@@ -364,6 +365,7 @@ public class addCarForm extends javax.swing.JFrame {
         int id = Integer.parseInt(inputValue);
         controller.deleteCar(id);
         fetchCarListIntoTable();
+        Dashboard.fetchCarStats();
     }//GEN-LAST:event_DeleteBtnActionPerformed
 
     private void EditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBtnActionPerformed
@@ -386,6 +388,7 @@ public class addCarForm extends javax.swing.JFrame {
 
             controller.updateCar(edit_car_id, registration, brand, model, capacity, year, price, availability_bool);
             fetchCarListIntoTable();
+            Dashboard.fetchCarStats();
 
             AddCarBtn.setEnabled(true);
             DeleteBtn.setEnabled(true);

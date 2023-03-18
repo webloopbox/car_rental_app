@@ -11,28 +11,29 @@ public class DashboardUser extends javax.swing.JFrame {
     public DashboardUser() {
         initComponents();
 
+        getUserSummaryStats();
+        ClientLabel.setText(controller.getUserData(controller.id, "username")[0]);
+    }
+
+    public static void getUserSummaryStats() {
         List<Map<String, Object>> carData = null;
         try {
             carData = controller.getUserSummary(controller.id);
-            
-             for (int i = 0; i < carData.size(); i++) {
-            Map<String, Object> car = carData.get(i);
-            java.sql.Date nearestReturnDate = (java.sql.Date) car.get("nearestReturnDate");
-            LocalDate localDate = nearestReturnDate.toLocalDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            String formattedDate = localDate.format(formatter);
 
-            totalCarsLabel.setText(car.get("numReservations").toString());
-            nearestReturnDateLabel.setText(formattedDate);
-            totalCostsLabel.setText(car.get("totalCost").toString());
-        }
+            for (int i = 0; i < carData.size(); i++) {
+                Map<String, Object> car = carData.get(i);
+                java.sql.Date nearestReturnDate = (java.sql.Date) car.get("nearestReturnDate");
+                LocalDate localDate = nearestReturnDate.toLocalDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                String formattedDate = localDate.format(formatter);
+
+                totalCarsLabel.setText(car.get("numReservations").toString());
+                nearestReturnDateLabel.setText(formattedDate);
+                totalCostsLabel.setText(car.get("totalCost").toString());
+            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
-
-       
-
-        ClientLabel.setText(controller.getUserData(controller.id, "username")[0]);
     }
 
     @SuppressWarnings("unchecked")
@@ -45,7 +46,7 @@ public class DashboardUser extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         ClientLabel = new javax.swing.JLabel();
         jButton1_Client_Cars = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        logoutBtn = new javax.swing.JButton();
         jButton4_Rent_Car_Client = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         totalCarsLabel = new javax.swing.JLabel();
@@ -85,7 +86,12 @@ public class DashboardUser extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Wyloguj się");
+        logoutBtn.setText("Wyloguj się");
+        logoutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutBtnActionPerformed(evt);
+            }
+        });
 
         jButton4_Rent_Car_Client.setText("Wypożycz samochód");
         jButton4_Rent_Car_Client.addActionListener(new java.awt.event.ActionListener() {
@@ -110,7 +116,7 @@ public class DashboardUser extends javax.swing.JFrame {
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 8, Short.MAX_VALUE))
                             .addComponent(ClientLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4_Rent_Car_Client, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -131,7 +137,7 @@ public class DashboardUser extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4_Rent_Car_Client, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
 
@@ -293,6 +299,12 @@ public class DashboardUser extends javax.swing.JFrame {
         clientRentCar.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton4_Rent_Car_ClientActionPerformed
 
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
+        loginForm loginForm = new loginForm();
+        loginForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logoutBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -331,7 +343,6 @@ public class DashboardUser extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ClientLabel;
     private javax.swing.JButton jButton1_Client_Cars;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4_Rent_Car_Client;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -343,8 +354,9 @@ public class DashboardUser extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JLabel nearestReturnDateLabel;
-    private javax.swing.JLabel totalCarsLabel;
-    private javax.swing.JLabel totalCostsLabel;
+    private javax.swing.JButton logoutBtn;
+    public static javax.swing.JLabel nearestReturnDateLabel;
+    public static javax.swing.JLabel totalCarsLabel;
+    public static javax.swing.JLabel totalCostsLabel;
     // End of variables declaration//GEN-END:variables
 }

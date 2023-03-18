@@ -274,6 +274,7 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
         System.out.println("formattedRentTo " + formattedRentTo);
         controller.addReservation(firstname, surname, registration, formattedRentFrom, formattedRentTo);
         fetchReservationListIntoTable();
+        Dashboard.fetchCarStats();
     }//GEN-LAST:event_addReservationBtnActionPerformed
 
     private void removeReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeReservationBtnActionPerformed
@@ -281,6 +282,7 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
         int id = Integer.parseInt(inputValue);
         controller.deleteReservation(id);
         fetchReservationListIntoTable();
+        Dashboard.fetchCarStats();
     }//GEN-LAST:event_removeReservationBtnActionPerformed
 
     public static void main(String args[]) {

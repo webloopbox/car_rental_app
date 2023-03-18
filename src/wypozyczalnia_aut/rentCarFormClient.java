@@ -443,6 +443,7 @@ public class rentCarFormClient extends javax.swing.JFrame {
         String formattedRentTo = dateFormat.format(rentTo);
 
         controller.addReservation(firstname, surname, selectedCarRegistraion, formattedRentFrom, formattedRentTo);
+        DashboardUser.getUserSummaryStats();
     }//GEN-LAST:event_orderBtnActionPerformed
 
     private void chooseMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseMenuBtnActionPerformed
