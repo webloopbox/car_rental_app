@@ -50,7 +50,7 @@ public class Server {
         if (rs.next()) {
             return 0;
         }
-        
+
         sql = "INSERT INTO users (username, password, email, phone, address, firstname, lastname, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepareStatement = con.prepareStatement(sql);
 
@@ -64,7 +64,7 @@ public class Server {
         prepareStatement.setString(8, role);
 
         prepareStatement.executeUpdate();
-        
+
         return 1;
     }
 
@@ -407,6 +407,17 @@ public class Server {
         return summary;
     }
 
+    public static double getTotalReservationsPrice() throws SQLException {
+        String sql = "SELECT SUM(DATEDIFF(rent_to, rent_from) * price) as total_price FROM users_cars INNER JOIN cars ON users_cars.car_id = cars.id";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("total_price");
+            }
+        }
+        return 0;
+    }
+
 }
 
 class ClientHandler implements Runnable {
@@ -561,8 +572,6 @@ class ClientHandler implements Runnable {
                     java.util.Date rentFromDate = dateFormat.parse(rentFrom);
                     java.util.Date rentToDate = dateFormat.parse(rentTo);
 
-                    System.out.println("rentFromDate.getYear" + rentFromDate);
-
                     java.sql.Date sqlRentFromDate = new java.sql.Date(rentFromDate.getYear(), rentFromDate.getMonth(), rentFromDate.getDate());
                     java.sql.Date sqlRentToDate = new java.sql.Date(rentToDate.getYear(), rentToDate.getMonth(), rentToDate.getDate());
 
@@ -614,7 +623,7 @@ class ClientHandler implements Runnable {
                     int userId = Integer.parseInt(in.readLine());
                     Map<String, Object> summary = Server.getReservationsSummaryForUser(userId);
                     if (summary == null) {
-                        // neccessary to handle inside Controller mathod as unsuccessfull response (no data found)
+                        // neccessary to handle inside Controller method as unsuccessfull response (no data found)
                         out.println(0);
                     } else {
                         out.println(summary.size());
@@ -625,11 +634,15 @@ class ClientHandler implements Runnable {
                         out.println(numReservations);
                         out.println(totalCost);
                         out.println(nearestReturnDate);
-
-                        System.out.println("numReservations: " + summary.get("numReservations"));
-                        System.out.println("totalCost: " + summary.get("totalCost"));
                     }
 
+                } else if (line.equals("GET_TOTAL_ORDERS_PRICE")) {
+                    try {
+                        double totalReservationsPrice = Server.getTotalReservationsPrice();
+                        out.println(totalReservationsPrice);
+                    } catch (SQLException e) {
+                        out.println("Error");
+                    }
                 } else {
                     out.println("Invalid command");
                 }

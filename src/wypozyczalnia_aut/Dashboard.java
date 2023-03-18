@@ -1,12 +1,52 @@
 package wypozyczalnia_aut;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static wypozyczalnia_aut.Main.controller;
+
 public class Dashboard extends javax.swing.JFrame {
-    private Controller controller;
 
     public Dashboard() {
         initComponents();
-        
+        fetchCarStats();
         jLabel_AdminIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/panelIcon.png")));
+    }
+
+    public void fetchCarStats() {
+        List<Map<String, Object>> carData = null;
+        try {
+            carData = controller.getAllCars();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        // Count the number of available cars
+        int availableCars = 0;
+        int notAvailableCars = 0;
+        for (Map<String, Object> car : carData) {
+            if (car.get("availability").equals("true")) {
+                availableCars++;
+            }
+            if (car.get("availability").equals("false")) {
+                notAvailableCars++;
+            }
+        }
+        
+        availableCarsLabel.setText(String.valueOf(availableCars));
+        unavailableCarsLabel.setText(String.valueOf(notAvailableCars));
+        
+        System.out.println("availableCars: " + availableCars);
+        
+        
+        Double totalOrdersPrice = controller.getTotalOrdersPrice();
+         System.out.println("totalOrdersPrice: "+String.valueOf(totalOrdersPrice));
+        totalPriceLabel.setText(String.valueOf(totalOrdersPrice));
+        
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -23,13 +63,13 @@ public class Dashboard extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5_Cars_Admin = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        unavailableCarsLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        totalPriceLabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        availableCarsLabel = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -127,10 +167,10 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("12");
+        unavailableCarsLabel.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        unavailableCarsLabel.setForeground(new java.awt.Color(0, 0, 0));
+        unavailableCarsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        unavailableCarsLabel.setText("12");
 
         jLabel6.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
@@ -144,7 +184,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(unavailableCarsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -152,7 +192,7 @@ public class Dashboard extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
+                .addComponent(unavailableCarsLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addContainerGap(38, Short.MAX_VALUE))
@@ -161,10 +201,10 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("2461,21");
+        totalPriceLabel.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        totalPriceLabel.setForeground(new java.awt.Color(0, 0, 0));
+        totalPriceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalPriceLabel.setText("2461,21");
 
         jLabel8.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
@@ -179,14 +219,14 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
+                    .addComponent(totalPriceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7)
+                .addComponent(totalPriceLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -195,10 +235,10 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("11");
+        availableCarsLabel.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        availableCarsLabel.setForeground(new java.awt.Color(0, 0, 0));
+        availableCarsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        availableCarsLabel.setText("11");
 
         jLabel4.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -212,7 +252,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(availableCarsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -220,7 +260,7 @@ public class Dashboard extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
+                .addComponent(availableCarsLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -276,7 +316,7 @@ public class Dashboard extends javax.swing.JFrame {
         rentCarAdmin.setVisible(true);
         rentCarAdmin.pack();
         rentCarAdmin.setLocationRelativeTo(null);
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5_Cars_AdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5_Cars_AdminActionPerformed
@@ -331,17 +371,15 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel availableCarsLabel;
     private javax.swing.JButton jButton1_Clients_Admin;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5_Cars_Admin;
     private javax.swing.JButton jButton_Logout;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel_AdminIcon;
     private javax.swing.JPanel jPanel1;
@@ -349,5 +387,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel totalPriceLabel;
+    private javax.swing.JLabel unavailableCarsLabel;
     // End of variables declaration//GEN-END:variables
 }

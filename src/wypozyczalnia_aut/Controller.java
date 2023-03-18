@@ -77,7 +77,6 @@ public class Controller {
 
                     if (role.equals("user")) {
                         loginForm.dispose();
-                        System.out.println("123123");
                         DashboardUser dashboardUser = new DashboardUser();
                         dashboardUser.show();
                     } else {
@@ -345,7 +344,6 @@ public class Controller {
             out.println("GET_USER_SUMMARY");
             out.println(userId);
             int size = Integer.parseInt(in.readLine());
-            System.out.println("controller.id: " + controller.id);
             if (size > 0) {
                 int numReservations = Integer.parseInt(in.readLine());
                 double totalCost = Double.parseDouble(in.readLine());
@@ -366,5 +364,15 @@ public class Controller {
         }
         return data;
     }
-
+    
+    public double getTotalOrdersPrice() {
+        try {
+        out.println("GET_TOTAL_ORDERS_PRICE");
+        String price = in.readLine();
+        return Double.parseDouble(price);
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0.0;
+    }
 }
