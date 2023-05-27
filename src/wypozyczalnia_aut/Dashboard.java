@@ -1,17 +1,20 @@
 package wypozyczalnia_aut;
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Map;
 
 import static wypozyczalnia_aut.Main.controller;
 
 public class Dashboard extends javax.swing.JFrame {
-
+    private static Logger logger = Logger.getLogger(Dashboard.class);
     /**
      * Creates new form Dashboard. Initializes the dashboard components, fetches
      * car statistics, and sets the admin icon.
      */
     public Dashboard() {
+        logger.info("Admin dashboard entered");
         initComponents();
         fetchCarStats();
         jLabel_AdminIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/panelIcon.png")));
@@ -51,7 +54,7 @@ public class Dashboard extends javax.swing.JFrame {
         Double totalOrdersPrice = controller.getTotalOrdersPrice();
         System.out.println("totalOrdersPrice: " + String.valueOf(totalOrdersPrice));
         totalPriceLabel.setText(String.valueOf(totalOrdersPrice));
-
+        logger.info("Fetched car stats");
     }
 
     @SuppressWarnings("unchecked")
@@ -322,9 +325,9 @@ public class Dashboard extends javax.swing.JFrame {
      *
      * @param evt The action event triggered by the logout button click.
      */
-    private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtnMouseClicked
+    private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_logoutBtnMouseClicked
+    }
 
     /**
      * Action performed when the "Rezerwacje" button is clicked. This method
@@ -332,14 +335,14 @@ public class Dashboard extends javax.swing.JFrame {
      *
      * @param evt The action event triggered by the "Rezerwacje" button click.
      */
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         RentCarFormAdmin rentCarAdmin = new RentCarFormAdmin();
         rentCarAdmin.setVisible(true);
         rentCarAdmin.pack();
         rentCarAdmin.setLocationRelativeTo(null);
-
-    }//GEN-LAST:event_jButton4ActionPerformed
+        logger.info("opened window for adding new reservations (admin)");
+    }
 
     /**
      * Action performed when the "Samochody" button is clicked. This method
@@ -347,13 +350,14 @@ public class Dashboard extends javax.swing.JFrame {
      *
      * @param evt The action event triggered by the "Samochody" button click.
      */
-    private void jButton5_Cars_AdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5_Cars_AdminActionPerformed
+    private void jButton5_Cars_AdminActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         AddCarForm addCarAdmin = new AddCarForm();
         addCarAdmin.setVisible(true);
         addCarAdmin.pack();
         addCarAdmin.setLocationRelativeTo(null);
-    }//GEN-LAST:event_jButton5_Cars_AdminActionPerformed
+        logger.info("opened window for adding new cars (admin)");
+    }
 
     /**
      * Action performed when the "Klienci" button is clicked. This method opens
@@ -361,13 +365,14 @@ public class Dashboard extends javax.swing.JFrame {
      *
      * @param evt The action event triggered by the "Klienci" button click.
      */
-    private void jButton1_Clients_AdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_Clients_AdminActionPerformed
+    private void jButton1_Clients_AdminActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         AddClientForm addClientAdmin = new AddClientForm();
         addClientAdmin.setVisible(true);
         addClientAdmin.pack();
         addClientAdmin.setLocationRelativeTo(null);
-    }//GEN-LAST:event_jButton1_Clients_AdminActionPerformed
+        logger.info("opened window for adding new users (admin)");
+    }
 
     /**
      * Action performed when the logout button is clicked. This method handles
@@ -375,11 +380,12 @@ public class Dashboard extends javax.swing.JFrame {
      *
      * @param evt The mouse event triggered by the logout button click.
      */
-    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {
         LoginForm loginForm = new LoginForm();
         loginForm.setVisible(true);
         dispose();
-    }//GEN-LAST:event_logoutBtnActionPerformed
+        logger.info("logout triggered");
+    }
 
     /**
      * @param args the command line arguments

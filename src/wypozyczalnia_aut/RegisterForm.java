@@ -1,6 +1,8 @@
 package wypozyczalnia_aut;
 
 import helpers.Helpers;
+import org.apache.log4j.Logger;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.BorderFactory;
@@ -10,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 public class RegisterForm extends javax.swing.JFrame {
-
+    private static Logger logger = Logger.getLogger(RegisterForm.class);
     private Controller controller;
 
     /**
@@ -57,6 +59,7 @@ public class RegisterForm extends javax.swing.JFrame {
      * stream (which is a network connection and connects to the local server)
      */
     private void registerUser() {
+        logger.info("register attempt");
         Helpers helpers = new Helpers();
         String email = EmailInput.getText();
         String pass = String.valueOf(PasswordInput.getPassword());

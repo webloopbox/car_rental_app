@@ -2,13 +2,17 @@ package wypozyczalnia_aut;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import org.apache.log4j.Logger;
 import server.Server;
 
 public class Main {
+    private static Logger logger = Logger.getLogger(Main.class);
     public static Controller controller;
     private static Server server;
     
     public static void main(String[] args) {
+        logger.info("Application started");
         
         server = new Server(); 
         

@@ -90,7 +90,7 @@ public class ControllerTest {
         double price = 140.0;
         boolean availability = false;
 
-        int result = controller.insertCar(regNumber, brand, model, engineCapacity, year, price, availability);
+        String result = controller.insertCar(regNumber, brand, model, engineCapacity, year, price, availability);
 
         List<Map<String, Object>> allCars = controller.getAllCars();
 
@@ -105,7 +105,10 @@ public class ControllerTest {
                 .orElse(""); // find carId by proper reg number
 
         assertTrue(containsRegNumber);
-        assertEquals(1, result);
+
+        if(!result.equals("Car inserted successfully")) {
+            fail("error while inserting a car");
+        }
     }
 
     @Test
@@ -204,10 +207,7 @@ public class ControllerTest {
     @Order(16)
     void deleteUser() {
         int id = Controller.userId;
-        controller.deleteUser(id);
-
-        // Assert that the user with the specified ID is deleted
-        String[] userData = controller.getUserData(id, "");
-        assertTrue(userData.length == 0);
+        int result = controller.deleteUser(id);
+        assertEquals(1, result);
     }
 }

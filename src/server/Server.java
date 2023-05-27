@@ -132,17 +132,28 @@ public class Server {
      * @throws SQLException if a database error occurs
      */
     public static void insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) throws SQLException {
-        String sql = "INSERT INTO cars (reg_number, brand, model, engine_capacity, year, price, availability) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setString(1, regNumber);
-        stmt.setString(2, brand);
-        stmt.setString(3, model);
-        stmt.setDouble(4, engineCapacity);
-        stmt.setInt(5, year);
-        stmt.setDouble(6, price);
-        stmt.setBoolean(7, availability);
-        stmt.executeUpdate();
+        String checkSql = "SELECT COUNT(*) FROM cars WHERE reg_number = ?";
+        PreparedStatement checkStmt = con.prepareStatement(checkSql);
+        checkStmt.setString(1, regNumber);
+        ResultSet checkResult = checkStmt.executeQuery();
+        checkResult.next();
+        int count = checkResult.getInt(1);
+        if (count > 0) {
+            throw new SQLException("Car with registration number already exists");
+        }
+
+        String insertSql = "INSERT INTO cars (reg_number, brand, model, engine_capacity, year, price, availability) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement insertStmt = con.prepareStatement(insertSql);
+        insertStmt.setString(1, regNumber);
+        insertStmt.setString(2, brand);
+        insertStmt.setString(3, model);
+        insertStmt.setDouble(4, engineCapacity);
+        insertStmt.setInt(5, year);
+        insertStmt.setDouble(6, price);
+        insertStmt.setBoolean(7, availability);
+        insertStmt.executeUpdate();
     }
+
 
     /**
      * Retrieves user data from the database for the given user ID and field

@@ -1,5 +1,7 @@
 package wypozyczalnia_aut;
 
+import org.apache.log4j.Logger;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import static wypozyczalnia_aut.Main.controller;
 
 public class RentCarFormAdmin extends javax.swing.JFrame {
-
+    private static Logger logger = Logger.getLogger(RentCarFormAdmin.class);
     /**
      * Constructs a new instance of RentCarFormAdmin. Initializes the
      * components, sets the minimum selectable dates for rentFromInput and
@@ -276,6 +278,7 @@ public class RentCarFormAdmin extends javax.swing.JFrame {
      * Dashboard's fetchCarStats method to update car statistics.
      */
     private void addReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addReservationBtnActionPerformed
+        logger.info("add reservation attempt");
         String firstname = firstnameInput.getText();
         String surname = surnameInput.getText();
         String registration = regInput.getText();
@@ -294,7 +297,7 @@ public class RentCarFormAdmin extends javax.swing.JFrame {
         controller.addReservation(firstname, surname, registration, formattedRentFrom, formattedRentTo);
         fetchReservationListIntoTable();
         Dashboard.fetchCarStats();
-    }//GEN-LAST:event_addReservationBtnActionPerformed
+    }
 
     /**
      * Performs the action when the removeReservationBtn is clicked. Prompts the
@@ -304,6 +307,7 @@ public class RentCarFormAdmin extends javax.swing.JFrame {
      * Calls the Dashboard's fetchCarStats method to update car statistics.
      */
     private void removeReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeReservationBtnActionPerformed
+        logger.info("remove reservation attempt");
         String inputValue = JOptionPane.showInputDialog("Podaj ID rezerwacji:");
         int id = Integer.parseInt(inputValue);
         controller.deleteReservation(id);

@@ -1,12 +1,14 @@
 package wypozyczalnia_aut;
 
+import org.apache.log4j.Logger;
+
 import java.awt.Color;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.Border;
 
 public class LoginForm extends javax.swing.JFrame {
-
+    private static Logger logger = Logger.getLogger(LoginForm.class);
     private Controller controller;
 
     public LoginForm() {
@@ -202,12 +204,13 @@ public class LoginForm extends javax.swing.JFrame {
      *
      * @param evt the MouseEvent object representing the event
      */
-    private void jLabel_RegisterUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_RegisterUserMouseClicked
+    private void jLabel_RegisterUserMouseClicked(java.awt.event.MouseEvent evt) {
+        logger.info("entered register form");
         RegisterForm formReg = new RegisterForm();
         formReg.setVisible(true);
         formReg.pack();
         formReg.setLocationRelativeTo(null);
-    }//GEN-LAST:event_jLabel_RegisterUserMouseClicked
+    }
 
     /**
      * Handles the action performed when the "Login" button is clicked. Calls
@@ -215,7 +218,8 @@ public class LoginForm extends javax.swing.JFrame {
      *
      * @param evt the ActionEvent object representing the event
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        logger.info("login attempt");
         String res = controller.loginUser( LoginInput, PassInput);
         if(res.equals("user")) {
             this.dispose();

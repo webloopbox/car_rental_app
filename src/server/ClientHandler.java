@@ -142,8 +142,12 @@ public class ClientHandler implements Runnable {
                     int year = Integer.parseInt(parts[5]);
                     double price = Double.parseDouble(parts[6].replace(",", "."));
                     boolean availability = Boolean.parseBoolean(parts[7]);
-                    Server.insertCar(regNumber, brand, model, engineCapacity, year, price, availability);
-                    out.println("Car inserted successfully");
+                    try {
+                        Server.insertCar(regNumber, brand, model, engineCapacity, year, price, availability);
+                        out.println("Car inserted successfully");
+                    } catch (SQLException ex) {
+                        out.println("Error: " + ex.getMessage());
+                    }
                 } else if (line.startsWith("DELETE_CAR")) {
                     int id = Integer.parseInt(line.split("\\s+")[1]);
                     Server.deleteCar(id);

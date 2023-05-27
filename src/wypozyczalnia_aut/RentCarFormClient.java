@@ -1,5 +1,7 @@
 package wypozyczalnia_aut;
 
+import org.apache.log4j.Logger;
+
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -19,7 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import static wypozyczalnia_aut.Main.controller;
 
 public class RentCarFormClient extends javax.swing.JFrame {
-
+    private static Logger logger = Logger.getLogger(RentCarFormClient.class);
     static int selectedCarRow;
     static String selectedCarRegistraion;
 
@@ -435,6 +437,7 @@ public class RentCarFormClient extends javax.swing.JFrame {
      * @params evt The action event.
      */
     private void orderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderBtnActionPerformed
+        logger.info("order car attempt");
         String firstname = firstnameInput.getText();
         String surname = surnameInput.getText();
         Date rentFrom = rentFromInput.getDate();

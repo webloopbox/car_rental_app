@@ -1,6 +1,8 @@
 package wypozyczalnia_aut;
 
 import helpers.Helpers;
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Map;
 import javax.swing.JFrame;
@@ -9,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import static wypozyczalnia_aut.Main.controller;
 
 public class AddClientForm extends javax.swing.JFrame {
-
+    private static Logger logger = Logger.getLogger(AddClientForm.class);
     public static int edit_user_id;
 
     public AddClientForm() {
@@ -62,6 +64,7 @@ public class AddClientForm extends javax.swing.JFrame {
      * the user, the client list is refreshed in the table.
      */
     private void addUser() {
+        logger.info("add new user attempt");
         Helpers helpers = new Helpers();
         String firstname = FirstnameInput.getText();
         String lastname = LastnameInput.getText();

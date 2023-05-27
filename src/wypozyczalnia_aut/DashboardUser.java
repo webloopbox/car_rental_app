@@ -1,5 +1,7 @@
 package wypozyczalnia_aut;
 
+import org.apache.log4j.Logger;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -8,8 +10,9 @@ import java.util.Map;
 import static wypozyczalnia_aut.Main.controller;
 
 public class DashboardUser extends javax.swing.JFrame {
-
+    private static Logger logger = Logger.getLogger(DashboardUser.class);
     public DashboardUser() {
+        logger.info("User dashboard entered");
         initComponents();
 
         getUserSummaryStats();
@@ -298,6 +301,7 @@ public class DashboardUser extends javax.swing.JFrame {
         clientCarsAll.setVisible(true);
         clientCarsAll.pack();
         clientCarsAll.setLocationRelativeTo(null);
+        logger.info("entered client cars view");
     }//GEN-LAST:event_jButton1_Client_CarsActionPerformed
 
     /**
@@ -312,6 +316,7 @@ public class DashboardUser extends javax.swing.JFrame {
         clientRentCar.setVisible(true);
         clientRentCar.pack();
         clientRentCar.setLocationRelativeTo(null);
+        logger.info("entered client car reservations view");
     }//GEN-LAST:event_jButton4_Rent_Car_ClientActionPerformed
 
     /**
@@ -324,6 +329,7 @@ public class DashboardUser extends javax.swing.JFrame {
         LoginForm loginForm = new LoginForm();
         loginForm.setVisible(true);
         dispose();
+        logger.info("logout triggered");
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     /**

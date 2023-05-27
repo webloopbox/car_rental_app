@@ -1,5 +1,7 @@
 package wypozyczalnia_aut;
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.Map;
 import javax.swing.JFrame;
@@ -8,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import static wypozyczalnia_aut.Main.controller;
 
 public class AddCarForm extends javax.swing.JFrame {
-
+    private static Logger logger = Logger.getLogger(AddCarForm.class);
     public static int edit_car_id;
 
     public AddCarForm() {
@@ -54,26 +56,32 @@ public class AddCarForm extends javax.swing.JFrame {
     }
 
     /**
-     * method that takes values from the form and adds a new car using
-     * controller.insertCar()
+     * method that takes values from the form and adds a new car using Controller insertCar()
      */
     private void addCar() {
+        logger.info("add new car attempt");
+        int year;
+        double price;
         String brand = (String) SelectBrand.getSelectedItem();
-        int year = Integer.parseInt(YearInput.getText());
         double capacity = Double.parseDouble(Capacity.getText());
         String model = ModelInput.getText();
         String registration = CarRegInput.getText();
-        double price = Double.parseDouble(PriceInput.getText());
         String availability = (String) AvailabilityInput.getSelectedItem();
-
-        boolean availability_bool;
-        if (availability.equals("Tak")) {
-            availability_bool = true;
-        } else {
-            availability_bool = false;
+        try {
+            year = Integer.parseInt(YearInput.getText());
+            price = Double.parseDouble(PriceInput.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid input for year or price. Please enter numeric values.");
+            return;
         }
 
-        controller.insertCar(registration, brand, model, capacity, year, price, availability_bool);
+        boolean availability_bool;
+        availability_bool = availability.equals("Tak");
+
+        String res = controller.insertCar(registration, brand, model, capacity, year, price, availability_bool);
+        if(!res.equals("Car inserted successfully")) {
+            JOptionPane.showMessageDialog(this, res);
+        }
         fetchCarListIntoTable();
         Dashboard.fetchCarStats();
     }

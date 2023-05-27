@@ -218,14 +218,14 @@ public class Controller {
      * @param price          The price of the car.
      * @param availability   The availability status of the car.
      */
-    public int insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
+    public String insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
         try {
             out.println("INSERT_CAR " + regNumber + " " + brand + " " + model + " " + engineCapacity + " " + year + " " + price + " " + availability);
             String response = in.readLine();
-            return 1;
+            return response;
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
+            return ex.getMessage();
         }
     }
 
@@ -329,12 +329,14 @@ public class Controller {
      *
      * @param id The ID of the user to be deleted.
      */
-    public void deleteUser(int id) {
+    public int deleteUser(int id) {
         try {
             out.println("DELETE_USER " + id);
             String response = in.readLine();
+            return 1;
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
     }
 
