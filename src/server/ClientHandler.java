@@ -218,6 +218,7 @@ public class ClientHandler implements Runnable {
                     List<Map<String, Object>> data = Server.getReservationsForUser(userId);
                     out.println(data.size());
                     for (Map<String, Object> map : data) {
+                        out.println(map.get("id"));
                         out.println(map.get("reg_number"));
                         out.println(map.get("brand"));
                         out.println(map.get("model"));

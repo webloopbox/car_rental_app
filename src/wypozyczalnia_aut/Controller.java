@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 import server.Server;
 
 public class Controller {
@@ -22,7 +23,7 @@ public class Controller {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    public static Integer id;
+    public static Integer userId;
 
     public Controller() {
         try {
@@ -38,12 +39,12 @@ public class Controller {
     /**
      * Logs in the user with the provided username and password.
      *
-     * @param loginForm The login form object
+     * @param loginForm  The login form object
      * @param LoginInput The JTextField containing the username input
-     * @param PassInput The JPasswordField containing the password input
+     * @param PassInput  The JPasswordField containing the password input
      * @return None
      */
-    public void loginUser(LoginForm loginForm, JTextField LoginInput, JPasswordField PassInput) {
+    public String loginUser(JTextField LoginInput, JPasswordField PassInput) {
         try {
 
             String username = LoginInput.getText();
@@ -54,66 +55,54 @@ public class Controller {
             out.println(password);
 
             int size = Integer.parseInt(in.readLine());
-
+            System.out.println("Size: " + size);
             if (size > 0) {
 
-                for (int i = 0; i < size; i++) {
-                    int id = Integer.parseInt(in.readLine());
-                    this.id = id;
-                    String name = in.readLine();
-                    String pass = in.readLine();
-                    String email = in.readLine();
-                    String phone = in.readLine();
-                    String firstname = in.readLine();
-                    String lastname = in.readLine();
-                    String role = in.readLine();
+                int id = Integer.parseInt(in.readLine());
+                this.userId = id;
+                String name = in.readLine();
+                String pass = in.readLine();
+                String email = in.readLine();
+                String phone = in.readLine();
+                String firstname = in.readLine();
+                String lastname = in.readLine();
+                String role = in.readLine();
 
-                    System.out.printf(name);
-                    System.out.printf(" ------- ");
-                    System.out.printf(pass);
-                    System.out.printf(" ------- ");
-                    System.out.printf(email);
-                    System.out.printf(" ------- ");
-                    System.out.printf(phone);
-                    System.out.printf(" ------- ");
-                    System.out.printf(firstname);
-                    System.out.printf(" ------- ");
-                    System.out.printf(lastname);
-                    System.out.printf(" ------- ");
-                    System.out.println(role);
+                System.out.printf(name);
+                System.out.printf(" ------- ");
+                System.out.printf(pass);
+                System.out.printf(" ------- ");
+                System.out.printf(email);
+                System.out.printf(" ------- ");
+                System.out.printf(phone);
+                System.out.printf(" ------- ");
+                System.out.printf(firstname);
+                System.out.printf(" ------- ");
+                System.out.printf(lastname);
+                System.out.printf(" ------- ");
+                System.out.println(role);
 
-                    if (role.equals("user")) {
-                        loginForm.dispose();
-                        DashboardUser dashboardUser = new DashboardUser();
-                        dashboardUser.show();
-                    } else {
-                        loginForm.dispose();
-                        Dashboard dashboard = new Dashboard();
-                        dashboard.show();
-                    }
-
-                }
+                return role.equals("user") ? "user" : "admin";
             } else {
-                JOptionPane.showMessageDialog(loginForm, "Podano zły login lub haslo");
-                LoginInput.setText("");
-                PassInput.setText("");
+                return "bad_credentials";
             }
         } catch (IOException ex) {
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
+            return "server_error";
         }
     }
 
     /**
      * Registers a new user with the provided information.
      *
-     * @param form The JFrame form object
-     * @param email The email address of the user
-     * @param password The password of the user
-     * @param username The username of the user
+     * @param form      The JFrame form object
+     * @param email     The email address of the user
+     * @param password  The password of the user
+     * @param username  The username of the user
      * @param firstname The first name of the user
-     * @param lastname The last name of the user
-     * @param address The address of the user
-     * @param phone The phone number of the user
+     * @param lastname  The last name of the user
+     * @param address   The address of the user
+     * @param phone     The phone number of the user
      * @return 1 if the registration is successful, 0 otherwise
      */
     public int registerUser(JFrame form, String email, String password, String username, String firstname, String lastname, String address, String phone) {
@@ -158,9 +147,9 @@ public class Controller {
     /**
      * Retrieves user data of the specified field type for a given user ID.
      *
-     * @param userId The ID of the user
+     * @param userId    The ID of the user
      * @param fieldType The type of field to retrieve (e.g., "email",
-     * "username", etc.)
+     *                  "username", etc.)
      * @return An array of strings containing the user data, or an empty array
      * if no data is found
      */
@@ -221,20 +210,22 @@ public class Controller {
     /**
      * Inserts a new car into the database.
      *
-     * @param regNumber The registration number of the car.
-     * @param brand The brand of the car.
-     * @param model The model of the car.
+     * @param regNumber      The registration number of the car.
+     * @param brand          The brand of the car.
+     * @param model          The model of the car.
      * @param engineCapacity The engine capacity of the car.
-     * @param year The manufacturing year of the car.
-     * @param price The price of the car.
-     * @param availability The availability status of the car.
+     * @param year           The manufacturing year of the car.
+     * @param price          The price of the car.
+     * @param availability   The availability status of the car.
      */
-    public void insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
+    public int insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
         try {
             out.println("INSERT_CAR " + regNumber + " " + brand + " " + model + " " + engineCapacity + " " + year + " " + price + " " + availability);
             String response = in.readLine();
+            return 1;
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
     }
 
@@ -243,12 +234,14 @@ public class Controller {
      *
      * @param id The ID of the car to be deleted.
      */
-    public void deleteCar(int id) {
+    public int deleteCar(int id) {
         try {
             out.println("DELETE_CAR " + id);
             String response = in.readLine();
+            return 1;
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
     }
 
@@ -256,21 +249,23 @@ public class Controller {
      * Updates the information of a car in the database based on the provided
      * car ID.
      *
-     * @param carId The ID of the car to be updated.
-     * @param regNumber The new registration number of the car.
-     * @param brand The new brand of the car.
-     * @param model The new model of the car.
+     * @param carId          The ID of the car to be updated.
+     * @param regNumber      The new registration number of the car.
+     * @param brand          The new brand of the car.
+     * @param model          The new model of the car.
      * @param engineCapacity The new engine capacity of the car.
-     * @param year The new manufacturing year of the car.
-     * @param price The new price of the car.
-     * @param availability The new availability status of the car.
+     * @param year           The new manufacturing year of the car.
+     * @param price          The new price of the car.
+     * @param availability   The new availability status of the car.
      */
-    public void updateCar(int carId, String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
+    public int updateCar(int carId, String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
         try {
             out.println("UPDATE_CAR " + carId + " " + regNumber + " " + brand + " " + model + " " + engineCapacity + " " + year + " " + price + " " + availability);
             String response = in.readLine();
+            return 1;
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
     }
 
@@ -278,20 +273,22 @@ public class Controller {
      * Updates the information of a user in the database based on the provided
      * user ID.
      *
-     * @param userId The ID of the user to be updated.
+     * @param userId    The ID of the user to be updated.
      * @param firstname The new firstname of the user.
-     * @param lastname The new lastname of the user.
-     * @param username The new username of the user.
-     * @param email The new email of the user.
-     * @param address The new address of the user.
-     * @param phone The new phone number of the user.
+     * @param lastname  The new lastname of the user.
+     * @param username  The new username of the user.
+     * @param email     The new email of the user.
+     * @param address   The new address of the user.
+     * @param phone     The new phone number of the user.
      */
-    public void updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) {
+    public int updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) {
         try {
             out.println("UPDATE_USER " + userId + " " + firstname + " " + lastname + " " + username + " " + email + " " + address + " " + phone);
             String response = in.readLine();
+            return 1;
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
     }
 
@@ -344,20 +341,16 @@ public class Controller {
     /**
      * Adds a new reservation to the database.
      *
-     * @param firstname The firstname of the user making the reservation.
-     * @param lastname The lastname of the user making the reservation.
+     * @param firstname    The firstname of the user making the reservation.
+     * @param lastname     The lastname of the user making the reservation.
      * @param registration The registration number of the car being reserved.
-     * @param rentFrom The start date of the reservation.
-     * @param rentTo The end date of the reservation.
+     * @param rentFrom     The start date of the reservation.
+     * @param rentTo       The end date of the reservation.
      */
-    public void addReservation(String firstname, String lastname, String registration, String rentFrom, String rentTo) {
-        
-      
+    public int addReservation(String firstname, String lastname, String registration, String rentFrom, String rentTo) {
 
-        
         try {
-//            out.printf("ADD_RESERVATION %s %s %s %s %s%n", firstname, lastname, registration, rentFrom, rentTo);
-            
+
             out.println("ADD_RESERVATION");
             out.println(firstname);
             out.println(lastname);
@@ -366,17 +359,18 @@ public class Controller {
             out.println(rentTo);
 
             String response = in.readLine();
-            
-            if (response.equals("Reservation added successfully") == false) {
+
+            if (!response.equals("Reservation added successfully")) {
                 throw new RuntimeException(response);
             } else {
-                JOptionPane.showMessageDialog(null, "Rezerwacja dodana pomyślnie", "Sukces", JOptionPane.INFORMATION_MESSAGE);
+                return 1;
             }
         } catch (Throwable ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Nie udało się dodać rezerwacji (błąd serwera)", "Error", JOptionPane.ERROR_MESSAGE);
+            return 0;
         }
     }
+
 
     /**
      * Retrieves information for all reservations from the database.
@@ -418,17 +412,18 @@ public class Controller {
      *
      * @param reservationId The ID of the reservation to be deleted.
      */
-    public void deleteReservation(int reservationId) {
+    public int deleteReservation(int reservationId) {
         try {
             out.printf("DELETE_RESERVATION %d\n", reservationId);
             String response = in.readLine();
             if (response.equals("Reservation deleted successfully")) {
-                // Do something
+                return 1;
             }
+            return 0;
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
-
     }
 
     /**
@@ -447,9 +442,11 @@ public class Controller {
             out.println("GET_USER_RESERVATIONS");
             out.println(userId);
             int size = Integer.parseInt(in.readLine());
+            System.out.println("Wynik: "+size);
             if (size > 0) {
                 for (int i = 0; i < size; i++) {
                     Map<String, Object> row = new HashMap<>();
+                    row.put("id", in.readLine());
                     row.put("reg_number", in.readLine());
                     row.put("brand", in.readLine());
                     row.put("model", in.readLine());
@@ -477,8 +474,8 @@ public class Controller {
      * "totalCost", etc.). The map values represent the values of the
      * corresponding summary fields.
      */
-    public List<Map<String, Object>> getUserSummary(int userId) {
-        List<Map<String, Object>> data = new ArrayList<>();
+    public Map<String, Object> getUserSummary(int userId) {
+        Map<String, Object> summary = new HashMap<>();
         try {
             out.println("GET_USER_SUMMARY");
             out.println(userId);
@@ -488,20 +485,20 @@ public class Controller {
                 double totalCost = Double.parseDouble(in.readLine());
                 String nearestReturnDateStr = in.readLine();
                 java.sql.Date nearestReturnDate = null;
+
                 if (nearestReturnDateStr != null && !nearestReturnDateStr.isEmpty()) {
                     nearestReturnDate = java.sql.Date.valueOf(nearestReturnDateStr);
                 }
-                Map<String, Object> summary = new HashMap<>();
+
                 summary.put("numReservations", numReservations);
                 summary.put("totalCost", totalCost);
                 summary.put("nearestReturnDate", nearestReturnDate);
-                data.add(summary);
             }
 
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return data;
+        return summary;
     }
 
     /**

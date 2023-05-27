@@ -480,7 +480,7 @@ public class Server {
      */
     public static List<Map<String, Object>> getReservationsForUser(int userId) throws SQLException {
         List<Map<String, Object>> data = new ArrayList<>();
-        String sql = "SELECT c.reg_number, c.brand, c.model, c.year, c.engine_capacity, uc.rent_from, uc.rent_to, c.price "
+        String sql = "SELECT uc.id, c.reg_number, c.brand, c.model, c.year, c.engine_capacity, uc.rent_from, uc.rent_to, c.price "
                 + "FROM users_cars uc "
                 + "JOIN users u ON uc.user_id = u.id "
                 + "JOIN cars c ON uc.car_id = c.id "
@@ -490,6 +490,7 @@ public class Server {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
+                row.put("id", rs.getString("id"));
                 row.put("reg_number", rs.getString("reg_number"));
                 row.put("brand", rs.getString("brand"));
                 row.put("model", rs.getString("model"));

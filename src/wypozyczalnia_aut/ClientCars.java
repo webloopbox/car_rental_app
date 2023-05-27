@@ -19,7 +19,7 @@ public class ClientCars extends javax.swing.JFrame {
         // Get the car data from the server
         List<Map<String, Object>> carData = null;
         try {
-            carData = controller.getUserReservations(controller.id);
+            carData = controller.getUserReservations(controller.userId);
         } catch (Throwable t) {
             t.printStackTrace();
         }

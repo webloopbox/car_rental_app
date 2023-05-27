@@ -1,7 +1,8 @@
 package wypozyczalnia_aut;
 
 import java.awt.Color;
-import javax.swing.BorderFactory;
+import java.net.URL;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 public class LoginForm extends javax.swing.JFrame {
@@ -18,9 +19,19 @@ public class LoginForm extends javax.swing.JFrame {
         this.setResizable(false);
 
         //Ładowanie zdjęć Bannera i ikon koło pól logowania
-        jLabel_Banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/bannerLogin.png")));
-        jLabel_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/user.png")));
-        jLabel_password.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/password.png")));
+        URL bannerURL = getClass().getResource("images/bannerLogin.png");
+        URL userURL = getClass().getResource("images/user.png");
+        URL passwordURL = getClass().getResource("images/password.png");
+
+        if (bannerURL != null) {
+            jLabel_Banner.setIcon(new javax.swing.ImageIcon(bannerURL));
+        }
+        if (userURL != null) {
+            jLabel_user.setIcon(new javax.swing.ImageIcon(userURL));
+        }
+        if (passwordURL != null) {
+            jLabel_password.setIcon(new javax.swing.ImageIcon(passwordURL));
+        }
 
         //Border
         System.setProperty("BorderLoginColor", "0xFFDF29");
@@ -205,16 +216,29 @@ public class LoginForm extends javax.swing.JFrame {
      * @param evt the ActionEvent object representing the event
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        controller.loginUser(this, LoginInput, PassInput);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        String res = controller.loginUser( LoginInput, PassInput);
+        if(res.equals("user")) {
+            this.dispose();
+            DashboardUser dashboardUser = new DashboardUser();
+            dashboardUser.show();
+        } else if(res.equals("admin")) {
+            this.dispose();
+            Dashboard dashboard = new Dashboard();
+            dashboard.show();
+        } else if(res.equals("bad_credentials")) {
+            JOptionPane.showMessageDialog(this, "Podano zły login lub haslo");
+            LoginInput.setText("");
+            PassInput.setText("");
+        }
+    }
 
     private void LoginInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginInputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_LoginInputActionPerformed
+    }
 
     private void PassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassInputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PassInputActionPerformed
+    }
 
     /**
      * Handles the action performed when the "Show Password" checkbox
