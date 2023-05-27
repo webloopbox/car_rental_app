@@ -1,21 +1,29 @@
 package server;
 
-import java.io.*;
 import java.net.*;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Server {
 
+    /**
+     * The connection object for the database.
+     */
     private static Connection con;
+
+    /**
+     * The port number for the server.
+     */
     public static int portNumber = 8000;
 
+    /**
+     * The main method that starts the server.
+     *
+     * @param args command line arguments
+     * @throws Exception if an error occurs
+     */
     public static void main(String[] args) throws Exception {
         boolean foundPort = false;
 
@@ -40,6 +48,20 @@ public class Server {
         }
     }
 
+    /**
+     * Adds a new user to the database.
+     *
+     * @param email the email of the user
+     * @param password the password of the user
+     * @param username the username of the user
+     * @param firstname the first name of the user
+     * @param lastname the last name of the user
+     * @param address the address of the user
+     * @param phone the phone number of the user
+     * @param role the role of the user
+     * @return 0 if the user already exists, 1 if the user is added successfully
+     * @throws SQLException if a database error occurs
+     */
     public static int addUser(String email, String password, String username, String firstname, String lastname, String address, String phone, String role) throws SQLException {
         String sql = "SELECT * FROM users WHERE username = ? OR email = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -68,6 +90,15 @@ public class Server {
         return 1;
     }
 
+    /**
+     * Retrieves user data from the database for the given username and
+     * password.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return a list of login data for the matching username and password
+     * @throws SQLException if a database error occurs
+     */
     public static List<Map<String, Object>> getLoginData(String username, String password) throws SQLException {
         List<Map<String, Object>> list = new ArrayList<>();
         String sql = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'";
@@ -88,6 +119,18 @@ public class Server {
         return list;
     }
 
+    /**
+     * Inserts a new car into the database.
+     *
+     * @param regNumber the registration number of the car
+     * @param brand the brand of the car
+     * @param model the model of the car
+     * @param engineCapacity the engine capacity of the car
+     * @param year the year of the car
+     * @param price the price of the car
+     * @param availability the availability status of the car
+     * @throws SQLException if a database error occurs
+     */
     public static void insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) throws SQLException {
         String sql = "INSERT INTO cars (reg_number, brand, model, engine_capacity, year, price, availability) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -101,6 +144,15 @@ public class Server {
         stmt.executeUpdate();
     }
 
+    /**
+     * Retrieves user data from the database for the given user ID and field
+     * type.
+     *
+     * @param userId the ID of the user
+     * @param fieldType the field type to retrieve (empty for all fields)
+     * @return a list of user data for the matching user ID and field type
+     * @throws SQLException if a database error occurs
+     */
     public static List<Map<String, Object>> getUserData(int userId, String fieldType) throws SQLException {
         List<Map<String, Object>> list = new ArrayList<>();
         String sql;
@@ -133,6 +185,13 @@ public class Server {
         return list;
     }
 
+    /**
+     * Retrieves a list of all users from the database.
+     *
+     * @return A list of maps representing user data, where each map contains
+     * user information.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     public static List<Map<String, Object>> getAllUsers() throws SQLException {
         List<Map<String, Object>> list = new ArrayList<>();
         String sql = "SELECT * FROM users";
@@ -153,6 +212,13 @@ public class Server {
         return list;
     }
 
+    /**
+     * Retrieves a list of all cars from the database.
+     *
+     * @return A list of maps representing car data, where each map contains car
+     * information.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     public static List<Map<String, Object>> getAllCars() throws SQLException {
         List<Map<String, Object>> list = new ArrayList<>();
         String sql = "SELECT * FROM cars";
@@ -173,6 +239,19 @@ public class Server {
         return list;
     }
 
+    /**
+     * Updates a car in the database with the provided information.
+     *
+     * @param carId The ID of the car to update.
+     * @param regNumber The registration number of the car.
+     * @param brand The brand of the car.
+     * @param model The model of the car.
+     * @param engineCapacity The engine capacity of the car.
+     * @param year The year of the car.
+     * @param price The price of the car.
+     * @param availability The availability status of the car.
+     * @throws SQLException if there is an error executing the SQL update.
+     */
     public static void updateCar(int carId, String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) throws SQLException {
         String sql = "UPDATE cars SET reg_number=?, brand=?, model=?, engine_capacity=?, year=?, price=?, availability=? WHERE id=?";
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -187,6 +266,18 @@ public class Server {
         stmt.executeUpdate();
     }
 
+    /**
+     * Updates a user in the database with the provided information.
+     *
+     * @param userId The ID of the user to update.
+     * @param firstname The first name of the user.
+     * @param lastname The last name of the user.
+     * @param username The username of the user.
+     * @param email The email address of the user.
+     * @param address The address of the user.
+     * @param phone The phone number of the user.
+     * @throws SQLException if there is an error executing the SQL update.
+     */
     public static void updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) throws SQLException {
         String sql = "UPDATE users SET firstname=?, lastname=?, username=?, email=?, address=?, phone=? WHERE id=?";
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -200,6 +291,12 @@ public class Server {
         stmt.executeUpdate();
     }
 
+    /**
+     * Deletes a car from the database.
+     *
+     * @param id The ID of the car to delete.
+     * @throws SQLException if there is an error executing the SQL delete.
+     */
     public static void deleteCar(int id) throws SQLException {
         String sql = "DELETE FROM cars WHERE id = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -207,6 +304,12 @@ public class Server {
         stmt.executeUpdate();
     }
 
+    /**
+     * Deletes a user from the database.
+     *
+     * @param id The ID of the user to delete.
+     * @throws SQLException if there is an error executing the SQL delete.
+     */
     public static void deleteUser(int id) throws SQLException {
         String sql = "DELETE FROM users WHERE id = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -214,6 +317,17 @@ public class Server {
         stmt.executeUpdate();
     }
 
+    /**
+     * Adds a reservation for a user and a car to the database.
+     *
+     * @param firstname The first name of the user.
+     * @param lastname The last name of the user.
+     * @param registration The registration number of the car.
+     * @param rentFrom The start date of the rental.
+     * @param rentTo The end date of the rental.
+     * @throws SQLException if there is an error executing the SQL queries or if
+     * the user or car is not found.
+     */
     public static void addReservation(String firstname, String lastname, String registration, java.sql.Date rentFrom, java.sql.Date rentTo) throws SQLException {
         // Get user ID from username
         String getUserSql = "SELECT id FROM users WHERE firstname = ? AND lastname = ?";
@@ -266,6 +380,13 @@ public class Server {
         updateAvailabilityStatement.executeUpdate();
     }
 
+    /**
+     * Retrieves a list of all reservations from the database.
+     *
+     * @return A list of maps representing reservation data, where each map
+     * contains reservation information.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     public static List<Map<String, Object>> getReservations() throws SQLException {
         List<Map<String, Object>> data = new ArrayList<>();
         String sql = "SELECT uc.id, u.firstname, u.lastname, c.reg_number, uc.rent_from, uc.rent_to, c.price "
@@ -296,6 +417,13 @@ public class Server {
         return data;
     }
 
+    /**
+     * Deletes a reservation from the database.
+     *
+     * @param reservationId The ID of the reservation to delete.
+     * @throws SQLException if there is an error executing the SQL delete or if
+     * the reservation is not found.
+     */
     public static void deleteReservation(int reservationId) throws SQLException {
         // Get car ID and rent dates from reservation ID
         String getReservationSql = "SELECT car_id, rent_from, rent_to FROM users_cars WHERE id = ?";
@@ -342,6 +470,14 @@ public class Server {
         }
     }
 
+    /**
+     * Retrieves a list of reservations for a specific user from the database.
+     *
+     * @param userId The ID of the user.
+     * @return A list of maps representing reservation data, where each map
+     * contains reservation information.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     public static List<Map<String, Object>> getReservationsForUser(int userId) throws SQLException {
         List<Map<String, Object>> data = new ArrayList<>();
         String sql = "SELECT c.reg_number, c.brand, c.model, c.year, c.engine_capacity, uc.rent_from, uc.rent_to, c.price "
@@ -368,6 +504,15 @@ public class Server {
         return data;
     }
 
+    /**
+     * Retrieves a summary of reservations for a specific user from the
+     * database.
+     *
+     * @param userId The ID of the user.
+     * @return A map containing the reservations summary, including the total
+     * number of reservations, total cost, and nearest return date.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     public static Map<String, Object> getReservationsSummaryForUser(int userId) throws SQLException {
         Map<String, Object> summary = new HashMap<>();
 
@@ -407,6 +552,12 @@ public class Server {
         return summary;
     }
 
+    /**
+     * Calculates the total price of all reservations in the database.
+     *
+     * @return The total price of all reservations.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     public static double getTotalReservationsPrice() throws SQLException {
         String sql = "SELECT SUM(DATEDIFF(rent_to, rent_from) * price) as total_price FROM users_cars INNER JOIN cars ON users_cars.car_id = cars.id";
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -416,245 +567,5 @@ public class Server {
             }
         }
         return 0;
-    }
-
-}
-
-class ClientHandler implements Runnable {
-
-    private Socket s;
-    private Connection con;
-
-    public ClientHandler(Socket s, Connection con) {
-        this.s = s;
-        this.con = con;
-    }
-
-    public void run() {
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-            PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-            String line;
-
-            while ((line = in.readLine()) != null) {
-                if (line.equals("REGISTER_USER")) {
-                    String email = in.readLine();
-                    String password = in.readLine();
-                    String username = in.readLine();
-                    String firstname = in.readLine();
-                    String lastname = in.readLine();
-                    String address = in.readLine();
-                    String phone = in.readLine();
-
-                    int resStatus = Server.addUser(email, password, username, firstname, lastname, address, phone, "user");
-                    out.println(resStatus);
-
-                } else if (line.equals("LOGIN_USER")) {
-
-                    String username = in.readLine();
-                    String password = in.readLine();
-                    List<Map<String, Object>> data = Server.getLoginData(username, password);
-                    out.println(data.size());
-
-                    for (Map<String, Object> map : data) {
-                        out.println(map.get("id"));
-                        out.println(map.get("username"));
-                        out.println(map.get("password"));
-                        out.println(map.get("email"));
-                        out.println(map.get("phone"));
-                        out.println(map.get("firstname"));
-                        out.println(map.get("lastname"));
-                        out.println(map.get("role"));
-                    }
-                } else if (line.equals("GET_USER_DATA")) {
-
-                    int userId = Integer.parseInt(in.readLine());
-                    String fieldType = in.readLine();
-                    List<Map<String, Object>> data = Server.getUserData(userId, fieldType);
-                    out.println(data.size());
-
-                    for (Map<String, Object> map : data) {
-                        if (!fieldType.isEmpty()) {
-                            out.println(map.get(fieldType));
-                        } else {
-                            out.println(map.get("id"));
-                            out.println(map.get("username"));
-                            out.println(map.get("password"));
-                            out.println(map.get("email"));
-                            out.println(map.get("phone"));
-                            out.println(map.get("firstname"));
-                            out.println(map.get("lastname"));
-                            out.println(map.get("role"));
-                        }
-                    }
-                } else if (line.equals("GET_ALL_USERS")) {
-                    List<Map<String, Object>> data = Server.getAllUsers();
-                    out.println(data.size());
-                    for (Map<String, Object> map : data) {
-                        out.println(map.get("id"));
-                        out.println(map.get("username"));
-                        out.println(map.get("email"));
-                        out.println(map.get("phone"));
-                        out.println(map.get("address"));
-                        out.println(map.get("firstname"));
-                        out.println(map.get("lastname"));
-                        out.println(map.get("role"));
-                    }
-                } else if (line.startsWith("UPDATE_USER")) {
-
-                    String[] parts = line.split("\\s+");
-
-                    int userId = Integer.parseInt(parts[1]);
-                    String firstname = parts[2];
-                    String lastname = parts[3];
-                    String username = parts[4];
-                    String email = parts[5];
-                    String address = parts[6];
-                    String phone = parts[7];
-
-                    Server.updateUser(userId, firstname, lastname, username, email, address, phone);
-                    out.println("Car updated successfully");
-                } else if (line.startsWith("DELETE_USER")) {
-                    int id = Integer.parseInt(line.split("\\s+")[1]);
-                    Server.deleteUser(id);
-                    out.println("User deleted successfully");
-                } else if (line.equals("GET_ALL_CARS")) {
-                    List<Map<String, Object>> data = Server.getAllCars();
-                    out.println(data.size());
-                    for (Map<String, Object> map : data) {
-                        out.println(map.get("id"));
-                        out.println(map.get("reg_number"));
-                        out.println(map.get("brand"));
-                        out.println(map.get("model"));
-                        out.println(map.get("engine_capacity"));
-                        out.println(map.get("year"));
-                        out.println(map.get("price"));
-                        out.println(map.get("availability"));
-                    }
-                } else if (line.startsWith("INSERT_CAR")) {
-                    String[] parts = line.split("\\s+");
-                    String regNumber = parts[1];
-                    String brand = parts[2];
-                    String model = parts[3];
-                    double engineCapacity = Double.parseDouble(parts[4].replace(",", "."));
-                    int year = Integer.parseInt(parts[5]);
-                    double price = Double.parseDouble(parts[6].replace(",", "."));
-                    boolean availability = Boolean.parseBoolean(parts[7]);
-                    Server.insertCar(regNumber, brand, model, engineCapacity, year, price, availability);
-                    out.println("Car inserted successfully");
-                } else if (line.startsWith("DELETE_CAR")) {
-                    int id = Integer.parseInt(line.split("\\s+")[1]);
-                    Server.deleteCar(id);
-                    out.println("Car deleted successfully");
-                } else if (line.startsWith("UPDATE_CAR")) {
-                    String[] parts = line.split("\\s+");
-                    int carId = Integer.parseInt(parts[1]);
-                    String regNumber = parts[2];
-                    String brand = parts[3];
-                    String model = parts[4];
-                    double engineCapacity = Double.parseDouble(parts[5].replace(",", "."));
-                    int year = Integer.parseInt(parts[6]);
-                    double price = Double.parseDouble(parts[7].replace(",", "."));
-                    boolean availability = Boolean.parseBoolean(parts[8]);
-                    Server.updateCar(carId, regNumber, brand, model, engineCapacity, year, price, availability);
-                    out.println("Car updated successfully");
-                } else if (line.startsWith("ADD_RESERVATION")) {
-                    Scanner scanner = new Scanner(line);
-
-                    String command = scanner.next();
-                    String firstname = scanner.next();
-                    String lastname = scanner.next();
-                    String registration = scanner.next();
-                    String rentFrom = scanner.next();
-                    String rentTo = scanner.next();
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    java.util.Date rentFromDate = dateFormat.parse(rentFrom);
-                    java.util.Date rentToDate = dateFormat.parse(rentTo);
-
-                    java.sql.Date sqlRentFromDate = new java.sql.Date(rentFromDate.getYear(), rentFromDate.getMonth(), rentFromDate.getDate());
-                    java.sql.Date sqlRentToDate = new java.sql.Date(rentToDate.getYear(), rentToDate.getMonth(), rentToDate.getDate());
-
-                    try {
-                        Server.addReservation(firstname, lastname, registration, sqlRentFromDate, sqlRentToDate);
-                        out.println("Reservation added successfully");
-                    } catch (SQLException e) {
-                        out.println("Error");
-                    }
-
-                } else if (line.equals("GET_ALL_RESERVATIONS")) {
-                    List<Map<String, Object>> data = Server.getReservations();
-
-                    out.println(data.size());
-                    for (Map<String, Object> map : data) {
-                        out.println(map.get("id"));
-                        out.println(map.get("firstname"));
-                        out.println(map.get("lastname"));
-                        out.println(map.get("registration"));
-                        out.println(map.get("rentFrom"));
-                        out.println(map.get("rentTo"));
-                        out.println(map.get("price"));
-                    }
-                } else if (line.startsWith("DELETE_RESERVATION")) {
-                    Scanner scanner = new Scanner(line);
-                    String command = scanner.next();
-                    int reservationId = scanner.nextInt();
-                    try {
-                        Server.deleteReservation(reservationId);
-                        out.println("Reservation deleted successfully");
-                    } catch (SQLException e) {
-                        out.println("Error");
-                    }
-                } else if (line.equals("GET_USER_RESERVATIONS")) {
-                    int userId = Integer.parseInt(in.readLine());
-                    List<Map<String, Object>> data = Server.getReservationsForUser(userId);
-                    out.println(data.size());
-                    for (Map<String, Object> map : data) {
-                        out.println(map.get("reg_number"));
-                        out.println(map.get("brand"));
-                        out.println(map.get("model"));
-                        out.println(map.get("year"));
-                        out.println(map.get("capacity"));
-                        out.println(map.get("rent_from"));
-                        out.println(map.get("rent_to"));
-                        out.println(map.get("price"));
-                    }
-                } else if (line.equals("GET_USER_SUMMARY")) {
-                    int userId = Integer.parseInt(in.readLine());
-                    Map<String, Object> summary = Server.getReservationsSummaryForUser(userId);
-                    if (summary == null) {
-                        // neccessary to handle inside Controller method as unsuccessfull response (no data found)
-                        out.println(0);
-                    } else {
-                        out.println(summary.size());
-                        int numReservations = (int) summary.get("numReservations");
-                        double totalCost = (double) summary.get("totalCost");
-                        java.sql.Date nearestReturnDate = (java.sql.Date) summary.get("nearestReturnDate");
-
-                        out.println(numReservations);
-                        out.println(totalCost);
-                        out.println(nearestReturnDate);
-                    }
-
-                } else if (line.equals("GET_TOTAL_ORDERS_PRICE")) {
-                    try {
-                        double totalReservationsPrice = Server.getTotalReservationsPrice();
-                        out.println(totalReservationsPrice);
-                    } catch (SQLException e) {
-                        out.println("Error");
-                    }
-                } else {
-                    out.println("Invalid command");
-                }
-            }
-            s.close();
-        } catch (SocketException e) {
-            // Connection reset by client
-            System.out.println("Client disconnected: " + s);
-        } catch (IOException | SQLException | NullPointerException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

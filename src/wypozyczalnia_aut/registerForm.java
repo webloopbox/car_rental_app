@@ -9,10 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
-public class registerForm extends javax.swing.JFrame {
+public class RegisterForm extends javax.swing.JFrame {
+
     private Controller controller;
-    
-    public registerForm() {
+
+    /**
+     * Create a registration form for new users
+     */
+    public RegisterForm() {
         initComponents();
 
         controller = Main.getController();
@@ -46,8 +50,14 @@ public class registerForm extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Function that acts as an submit handler for the registration form, checks
+     * the correctness of the entered data, then calls the registerUser method
+     * of the Controller class, where the data is sent to the sockets output
+     * stream (which is a network connection and connects to the local server)
+     */
     private void registerUser() {
-        Helpers helpers = new Helpers();  
+        Helpers helpers = new Helpers();
         String email = EmailInput.getText();
         String pass = String.valueOf(PasswordInput.getPassword());
         String rePass = String.valueOf(RePasswordInput.getPassword());
@@ -78,7 +88,9 @@ public class registerForm extends javax.swing.JFrame {
         }
 
         int status = controller.registerUser(this, email, pass, username, firstname, lastname, address, phone);
-        if(status == 1) this.dispose();
+        if (status == 1) {
+            this.dispose();
+        }
     }
 
 //==================================================================================================
@@ -349,20 +361,21 @@ public class registerForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(registerForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(registerForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(registerForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(registerForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                new registerForm().setVisible(true);
+//                new RegisterForm().setVisible(true);
             }
         });
     }

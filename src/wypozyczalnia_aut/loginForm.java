@@ -4,31 +4,31 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 
-public class loginForm extends javax.swing.JFrame {
-    
+public class LoginForm extends javax.swing.JFrame {
+
     private Controller controller;
-    
-    public loginForm() {
+
+    public LoginForm() {
         initComponents();
-        
+
         controller = Main.getController();
-        
+
         //Centrowanie Okienka
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        
+
         //Ładowanie zdjęć Bannera i ikon koło pól logowania
         jLabel_Banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/bannerLogin.png")));
         jLabel_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/user.png")));
         jLabel_password.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/password.png")));
-        
+
         //Border
         System.setProperty("BorderLoginColor", "0xFFDF29");
-        Border title_border = BorderFactory.createMatteBorder(0,0,3,0,Color.getColor("BorderLoginColor"));
+        Border title_border = BorderFactory.createMatteBorder(0, 0, 3, 0, Color.getColor("BorderLoginColor"));
         titleBorder.setBorder(title_border);
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -185,17 +185,25 @@ public class loginForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Handles the action performed when the "Register User" label is clicked.
+     * Opens the RegisterForm window.
+     *
+     * @param evt the MouseEvent object representing the event
+     */
     private void jLabel_RegisterUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_RegisterUserMouseClicked
-        // TODO add your handling code here:
-        
-        
-//=============================================================================================================================================================================
-        registerForm formReg = new registerForm();
+        RegisterForm formReg = new RegisterForm();
         formReg.setVisible(true);
         formReg.pack();
         formReg.setLocationRelativeTo(null);
     }//GEN-LAST:event_jLabel_RegisterUserMouseClicked
 
+    /**
+     * Handles the action performed when the "Login" button is clicked. Calls
+     * the controller's loginUser method to validate the login credentials.
+     *
+     * @param evt the ActionEvent object representing the event
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         controller.loginUser(this, LoginInput, PassInput);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -208,16 +216,26 @@ public class loginForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_PassInputActionPerformed
 
+    /**
+     * Handles the action performed when the "Show Password" checkbox
+     * (right-side eye) is clicked. Changes the echo character of the password
+     * field based on the checkbox state. If the checkbox is selected, the
+     * password is shown as plain text. If the checkbox is unselected, the
+     * password is masked with asterisks.
+     *
+     * @param evt the ActionEvent object representing the event
+     */
     private void ShowPassLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPassLoginActionPerformed
 
         if (ShowPassLogin.isSelected()) {
-            PassInput.setEchoChar((char)0);
+            PassInput.setEchoChar((char) 0);
         } else {
             PassInput.setEchoChar('*');
         }
 
     }//GEN-LAST:event_ShowPassLoginActionPerformed
 //=============================================================================================================================================================================
+
     /**
      * @param args the command line arguments
      */
@@ -235,20 +253,21 @@ public class loginForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(loginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(loginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(loginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(loginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                new loginForm().setVisible(true);
+//                new LoginForm().setVisible(true);
             }
         });
     }

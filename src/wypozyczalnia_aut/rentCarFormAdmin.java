@@ -9,9 +9,15 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static wypozyczalnia_aut.Main.controller;
 
-public class rentCarFormAdmin extends javax.swing.JFrame {
+public class RentCarFormAdmin extends javax.swing.JFrame {
 
-    public rentCarFormAdmin() {
+    /**
+     * Constructs a new instance of RentCarFormAdmin. Initializes the
+     * components, sets the minimum selectable dates for rentFromInput and
+     * rentToInput, fetches the reservation list into the table, and sets the
+     * default close operation to dispose of the frame.
+     */
+    public RentCarFormAdmin() {
         initComponents();
 
         rentFromInput.setMinSelectableDate(new Date());
@@ -22,6 +28,12 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Fetches the list of reservations from the controller and populates the
+     * ReservationTable JTable with the retrieved data. Each row in the table
+     * represents a reservation, and each column represents a reservation
+     * attribute.
+     */
     private void fetchReservationListIntoTable() {
         List<Map<String, Object>> reservationsData = controller.getAllReservations();
 
@@ -254,6 +266,15 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Performs the action when the addReservationBtn is clicked. Retrieves the
+     * input values for firstname, surname, registration, rentFrom, and rentTo.
+     * Validates the rentTo date to ensure it is not before rentFrom. Formats
+     * the rentFrom and rentTo dates into the desired format. Calls the
+     * controller's addReservation method with the input values. Fetches the
+     * updated reservation list and updates the ReservationTable. Calls the
+     * Dashboard's fetchCarStats method to update car statistics.
+     */
     private void addReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addReservationBtnActionPerformed
         String firstname = firstnameInput.getText();
         String surname = surnameInput.getText();
@@ -270,13 +291,18 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
         String formattedRentFrom = dateFormat.format(rentFrom);
         String formattedRentTo = dateFormat.format(rentTo);
 
-        System.out.println("formattedRentFrom " + formattedRentFrom);
-        System.out.println("formattedRentTo " + formattedRentTo);
         controller.addReservation(firstname, surname, registration, formattedRentFrom, formattedRentTo);
         fetchReservationListIntoTable();
         Dashboard.fetchCarStats();
     }//GEN-LAST:event_addReservationBtnActionPerformed
 
+    /**
+     * Performs the action when the removeReservationBtn is clicked. Prompts the
+     * user to input the reservation ID to be removed. Parses the input ID to an
+     * integer. Calls the controller's deleteReservation method with the ID.
+     * Fetches the updated reservation list and updates the ReservationTable.
+     * Calls the Dashboard's fetchCarStats method to update car statistics.
+     */
     private void removeReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeReservationBtnActionPerformed
         String inputValue = JOptionPane.showInputDialog("Podaj ID rezerwacji:");
         int id = Integer.parseInt(inputValue);
@@ -299,20 +325,21 @@ public class rentCarFormAdmin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(rentCarFormAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RentCarFormAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(rentCarFormAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RentCarFormAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(rentCarFormAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RentCarFormAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(rentCarFormAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RentCarFormAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new rentCarFormAdmin().setVisible(true);
+                new RentCarFormAdmin().setVisible(true);
             }
         });
     }

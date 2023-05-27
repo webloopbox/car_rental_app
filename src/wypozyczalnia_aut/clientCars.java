@@ -6,9 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import static wypozyczalnia_aut.Main.controller;
 
-public class clientCars extends javax.swing.JFrame {
+public class ClientCars extends javax.swing.JFrame {
 
-    public clientCars() {
+    public ClientCars() {
         initComponents();
 
         fetchUserReservationsIntoTable();
@@ -145,20 +145,21 @@ public class clientCars extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(clientCars.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientCars.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(clientCars.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientCars.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(clientCars.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientCars.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(clientCars.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientCars.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new clientCars().setVisible(true);
+                new ClientCars().setVisible(true);
             }
         });
     }

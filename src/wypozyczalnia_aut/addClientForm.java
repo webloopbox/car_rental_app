@@ -8,17 +8,25 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static wypozyczalnia_aut.Main.controller;
 
-public class addClientForm extends javax.swing.JFrame {
+public class AddClientForm extends javax.swing.JFrame {
 
     public static int edit_user_id;
 
-    public addClientForm() {
+    public AddClientForm() {
         initComponents();
 
         fetchClientListIntoTable();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Fetches the client list from the controller and populates it into the
+     * ClientsTable. The client list is retrieved as a list of maps containing
+     * client information. The list is then converted into a two-dimensional
+     * array of objects to be displayed in the table. The column names for the
+     * table are predefined. Finally, the data and column names are set as the
+     * model of the ClientsTable.
+     */
     private void fetchClientListIntoTable() {
         List<Map<String, Object>> usersData = controller.getAllUsers();
 
@@ -44,6 +52,15 @@ public class addClientForm extends javax.swing.JFrame {
         ClientsTable.setModel(model);
     }
 
+    /**
+     * Adds a new user based on the input values provided in the corresponding
+     * input fields. Performs validation on the input fields to ensure that all
+     * required fields are filled. Additionally, it validates the email address
+     * and phone number format using helper methods. If any validation fails, an
+     * appropriate error message is displayed. If all validations pass, the user
+     * is registered through the controller's registerUser method. After adding
+     * the user, the client list is refreshed in the table.
+     */
     private void addUser() {
         Helpers helpers = new Helpers();
         String firstname = FirstnameInput.getText();
@@ -329,6 +346,9 @@ public class addClientForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Resets the input fields in the user form to empty values.
+     */
     private void ResetUserFormBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetUserFormBtnActionPerformed
         FirstnameInput.setText("");
         LastnameInput.setText("");
@@ -339,6 +359,9 @@ public class addClientForm extends javax.swing.JFrame {
         PhoneInput.setText("");
     }//GEN-LAST:event_ResetUserFormBtnActionPerformed
 
+    /**
+     * Deletes a user based on the provided user ID.
+     */
     private void DeleteUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteUserBtnActionPerformed
         String inputValue = JOptionPane.showInputDialog("Podaj ID klienta:");
         int id = Integer.parseInt(inputValue);
@@ -346,10 +369,25 @@ public class addClientForm extends javax.swing.JFrame {
         fetchClientListIntoTable();
     }//GEN-LAST:event_DeleteUserBtnActionPerformed
 
+    /**
+     * add user handler
+     *
+     * @param evt
+     */
     private void AddUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddUserBtnActionPerformed
         addUser();
     }//GEN-LAST:event_AddUserBtnActionPerformed
 
+    /**
+     * Handles the action performed when the Edit User button is clicked.
+     *
+     * If the button text is "Zapisz", it saves the updated user information.
+     * Otherwise, it allows editing the user information by retrieving it from
+     * the table based on the user ID.
+     *
+     * @param evt the action event that triggered the method
+     * @return None
+     */
     private void EditUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditUserBtnActionPerformed
         if (EditUserBtn.getText().equals("Zapisz")) {
             String firstname = FirstnameInput.getText();
@@ -448,20 +486,21 @@ public class addClientForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(addClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(addClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(addClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(addClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddClientForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new addClientForm().setVisible(true);
+                new AddClientForm().setVisible(true);
             }
         });
     }

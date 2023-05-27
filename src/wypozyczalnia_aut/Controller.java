@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import server.Server;
-import static wypozyczalnia_aut.Main.controller;
 
 public class Controller {
 
@@ -32,11 +31,19 @@ public class Controller {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException ex) {
-            Logger.getLogger(loginForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void loginUser(loginForm loginForm, JTextField LoginInput, JPasswordField PassInput) {
+    /**
+     * Logs in the user with the provided username and password.
+     *
+     * @param loginForm The login form object
+     * @param LoginInput The JTextField containing the username input
+     * @param PassInput The JPasswordField containing the password input
+     * @return None
+     */
+    public void loginUser(LoginForm loginForm, JTextField LoginInput, JPasswordField PassInput) {
         try {
 
             String username = LoginInput.getText();
@@ -92,10 +99,23 @@ public class Controller {
                 PassInput.setText("");
             }
         } catch (IOException ex) {
-            Logger.getLogger(loginForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Registers a new user with the provided information.
+     *
+     * @param form The JFrame form object
+     * @param email The email address of the user
+     * @param password The password of the user
+     * @param username The username of the user
+     * @param firstname The first name of the user
+     * @param lastname The last name of the user
+     * @param address The address of the user
+     * @param phone The phone number of the user
+     * @return 1 if the registration is successful, 0 otherwise
+     */
     public int registerUser(JFrame form, String email, String password, String username, String firstname, String lastname, String address, String phone) {
 
         try {
@@ -111,15 +131,15 @@ public class Controller {
             out.println(phone);
 
             String res = in.readLine();
-            
+
             if (Integer.parseInt(res) == 0) {
                 JOptionPane.showMessageDialog(form,
-                    "Użytkownik o tej samej nazwie użytkownika lub adresie e-mail już istnieje",
-                    "Niepowodzenie",
-                    JOptionPane.ERROR_MESSAGE);
+                        "Użytkownik o tej samej nazwie użytkownika lub adresie e-mail już istnieje",
+                        "Niepowodzenie",
+                        JOptionPane.ERROR_MESSAGE);
                 return 0;
             }
-            
+
             return 1;
 
         } catch (Exception e) {
@@ -130,15 +150,19 @@ public class Controller {
             System.out.println("Nie udało się wykonać rejestracji");
             System.out.println(e);
         }
-        
+
         return 0;
-        
+
     }
 
-    /*
-    @params receive field param, for example username or email
-    If fieldType argument passed then return 1 field
-    Otherwise return all user fields
+    /**
+     * Retrieves user data of the specified field type for a given user ID.
+     *
+     * @param userId The ID of the user
+     * @param fieldType The type of field to retrieve (e.g., "email",
+     * "username", etc.)
+     * @return An array of strings containing the user data, or an empty array
+     * if no data is found
      */
     public String[] getUserData(int userId, String fieldType) {
         List<String> dataList = new ArrayList<>();
@@ -162,6 +186,13 @@ public class Controller {
         return dataArray;
     }
 
+    /**
+     * Retrieves information for all cars from the database.
+     *
+     * @return A list of maps, where each map represents the data of a car The
+     * map keys correspond to the field names (e.g., "id", "reg_number", etc.)
+     * The map values represent the values of the corresponding fields
+     */
     public List<Map<String, Object>> getAllCars() {
         List<Map<String, Object>> data = new ArrayList<>();
         try {
@@ -187,6 +218,17 @@ public class Controller {
         return data;
     }
 
+    /**
+     * Inserts a new car into the database.
+     *
+     * @param regNumber The registration number of the car.
+     * @param brand The brand of the car.
+     * @param model The model of the car.
+     * @param engineCapacity The engine capacity of the car.
+     * @param year The manufacturing year of the car.
+     * @param price The price of the car.
+     * @param availability The availability status of the car.
+     */
     public void insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
         try {
             out.println("INSERT_CAR " + regNumber + " " + brand + " " + model + " " + engineCapacity + " " + year + " " + price + " " + availability);
@@ -196,6 +238,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Deletes a car from the database based on the provided car ID.
+     *
+     * @param id The ID of the car to be deleted.
+     */
     public void deleteCar(int id) {
         try {
             out.println("DELETE_CAR " + id);
@@ -205,6 +252,19 @@ public class Controller {
         }
     }
 
+    /**
+     * Updates the information of a car in the database based on the provided
+     * car ID.
+     *
+     * @param carId The ID of the car to be updated.
+     * @param regNumber The new registration number of the car.
+     * @param brand The new brand of the car.
+     * @param model The new model of the car.
+     * @param engineCapacity The new engine capacity of the car.
+     * @param year The new manufacturing year of the car.
+     * @param price The new price of the car.
+     * @param availability The new availability status of the car.
+     */
     public void updateCar(int carId, String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) {
         try {
             out.println("UPDATE_CAR " + carId + " " + regNumber + " " + brand + " " + model + " " + engineCapacity + " " + year + " " + price + " " + availability);
@@ -214,6 +274,18 @@ public class Controller {
         }
     }
 
+    /**
+     * Updates the information of a user in the database based on the provided
+     * user ID.
+     *
+     * @param userId The ID of the user to be updated.
+     * @param firstname The new firstname of the user.
+     * @param lastname The new lastname of the user.
+     * @param username The new username of the user.
+     * @param email The new email of the user.
+     * @param address The new address of the user.
+     * @param phone The new phone number of the user.
+     */
     public void updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) {
         try {
             out.println("UPDATE_USER " + userId + " " + firstname + " " + lastname + " " + username + " " + email + " " + address + " " + phone);
@@ -223,6 +295,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Retrieves information for all users from the database.
+     *
+     * @return A list of maps, where each map represents the data of a user. The
+     * map keys correspond to the field names (e.g., "id", "username", etc.).
+     * The map values represent the values of the corresponding fields.
+     */
     public List<Map<String, Object>> getAllUsers() {
         List<Map<String, Object>> data = new ArrayList<>();
         try {
@@ -248,6 +327,11 @@ public class Controller {
         return data;
     }
 
+    /**
+     * Deletes a user from the database based on the provided user ID.
+     *
+     * @param id The ID of the user to be deleted.
+     */
     public void deleteUser(int id) {
         try {
             out.println("DELETE_USER " + id);
@@ -257,21 +341,51 @@ public class Controller {
         }
     }
 
+    /**
+     * Adds a new reservation to the database.
+     *
+     * @param firstname The firstname of the user making the reservation.
+     * @param lastname The lastname of the user making the reservation.
+     * @param registration The registration number of the car being reserved.
+     * @param rentFrom The start date of the reservation.
+     * @param rentTo The end date of the reservation.
+     */
     public void addReservation(String firstname, String lastname, String registration, String rentFrom, String rentTo) {
+        
+      
+
+        
         try {
-            out.printf("ADD_RESERVATION %s %s %s %s %s%n", firstname, lastname, registration, rentFrom, rentTo);
-            if (in.readLine().equals("Error")) {
-                throw new RuntimeException("Failed to add reservation");
+//            out.printf("ADD_RESERVATION %s %s %s %s %s%n", firstname, lastname, registration, rentFrom, rentTo);
+            
+            out.println("ADD_RESERVATION");
+            out.println(firstname);
+            out.println(lastname);
+            out.println(registration);
+            out.println(rentFrom);
+            out.println(rentTo);
+
+            String response = in.readLine();
+            
+            if (response.equals("Reservation added successfully") == false) {
+                throw new RuntimeException(response);
             } else {
                 JOptionPane.showMessageDialog(null, "Rezerwacja dodana pomyślnie", "Sukces", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Throwable ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Nie udało się dodać rezerwacji (błąd serwera)", "Error", JOptionPane.ERROR_MESSAGE);
-
         }
     }
 
+    /**
+     * Retrieves information for all reservations from the database.
+     *
+     * @return A list of maps, where each map represents the data of a
+     * reservation. The map keys correspond to the field names (e.g., "id",
+     * "firstname", etc.). The map values represent the values of the
+     * corresponding fields.
+     */
     public List<Map<String, Object>> getAllReservations() {
         List<Map<String, Object>> data = new ArrayList<>();
 
@@ -298,6 +412,12 @@ public class Controller {
         return data;
     }
 
+    /**
+     * Deletes a reservation from the database based on the provided reservation
+     * ID.
+     *
+     * @param reservationId The ID of the reservation to be deleted.
+     */
     public void deleteReservation(int reservationId) {
         try {
             out.printf("DELETE_RESERVATION %d\n", reservationId);
@@ -311,6 +431,15 @@ public class Controller {
 
     }
 
+    /**
+     * Retrieves reservations for a specific user from the database.
+     *
+     * @param userId The ID of the user for whom reservations are retrieved.
+     * @return A list of maps, where each map represents the data of a
+     * reservation. The map keys correspond to the field names (e.g.,
+     * "reg_number", "brand", etc.). The map values represent the values of the
+     * corresponding fields.
+     */
     public List<Map<String, Object>> getUserReservations(int userId) {
         List<Map<String, Object>> data = new ArrayList<>();
 
@@ -338,6 +467,16 @@ public class Controller {
         return data;
     }
 
+    /**
+     * Retrieves a summary of user information from the database based on the
+     * provided user ID.
+     *
+     * @param userId The ID of the user for whom the summary is retrieved.
+     * @return A list of maps, where each map represents the user summary data.
+     * The map keys correspond to the summary fields (e.g., "numReservations",
+     * "totalCost", etc.). The map values represent the values of the
+     * corresponding summary fields.
+     */
     public List<Map<String, Object>> getUserSummary(int userId) {
         List<Map<String, Object>> data = new ArrayList<>();
         try {
@@ -364,12 +503,17 @@ public class Controller {
         }
         return data;
     }
-    
+
+    /**
+     * Retrieves the total price of all orders from the database.
+     *
+     * @return The total price of all car orders.
+     */
     public double getTotalOrdersPrice() {
         try {
-        out.println("GET_TOTAL_ORDERS_PRICE");
-        String price = in.readLine();
-        return Double.parseDouble(price);
+            out.println("GET_TOTAL_ORDERS_PRICE");
+            String price = in.readLine();
+            return Double.parseDouble(price);
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }

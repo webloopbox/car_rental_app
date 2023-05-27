@@ -7,12 +7,22 @@ import static wypozyczalnia_aut.Main.controller;
 
 public class Dashboard extends javax.swing.JFrame {
 
+    /**
+     * Creates new form Dashboard. Initializes the dashboard components, fetches
+     * car statistics, and sets the admin icon.
+     */
     public Dashboard() {
         initComponents();
         fetchCarStats();
         jLabel_AdminIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/panelIcon.png")));
     }
 
+    /**
+     * Fetches car statistics and updates the corresponding labels in the
+     * dashboard. This method retrieves car data and counts the number of
+     * available and unavailable cars. It also calculates the total orders price
+     * and updates the total price label.
+     */
     public static void fetchCarStats() {
         List<Map<String, Object>> carData = null;
         try {
@@ -32,18 +42,16 @@ public class Dashboard extends javax.swing.JFrame {
                 notAvailableCars++;
             }
         }
-        
+
         availableCarsLabel.setText(String.valueOf(availableCars));
         unavailableCarsLabel.setText(String.valueOf(notAvailableCars));
-        
+
         System.out.println("availableCars: " + availableCars);
-        
-        
+
         Double totalOrdersPrice = controller.getTotalOrdersPrice();
-         System.out.println("totalOrdersPrice: "+String.valueOf(totalOrdersPrice));
+        System.out.println("totalOrdersPrice: " + String.valueOf(totalOrdersPrice));
         totalPriceLabel.setText(String.valueOf(totalOrdersPrice));
-        
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -308,37 +316,67 @@ public class Dashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Action performed when the logout button is clicked. This method handles
+     * the logout functionality and redirects the user to the login form.
+     *
+     * @param evt The action event triggered by the logout button click.
+     */
     private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtnMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_logoutBtnMouseClicked
 
+    /**
+     * Action performed when the "Rezerwacje" button is clicked. This method
+     * opens the RentCarFormAdmin for managing car rentals.
+     *
+     * @param evt The action event triggered by the "Rezerwacje" button click.
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        rentCarFormAdmin rentCarAdmin = new rentCarFormAdmin();
+        RentCarFormAdmin rentCarAdmin = new RentCarFormAdmin();
         rentCarAdmin.setVisible(true);
         rentCarAdmin.pack();
         rentCarAdmin.setLocationRelativeTo(null);
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    /**
+     * Action performed when the "Samochody" button is clicked. This method
+     * opens the AddCarForm for managing cars.
+     *
+     * @param evt The action event triggered by the "Samochody" button click.
+     */
     private void jButton5_Cars_AdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5_Cars_AdminActionPerformed
         // TODO add your handling code here:
-        addCarForm addCarAdmin = new addCarForm();
+        AddCarForm addCarAdmin = new AddCarForm();
         addCarAdmin.setVisible(true);
         addCarAdmin.pack();
         addCarAdmin.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton5_Cars_AdminActionPerformed
 
+    /**
+     * Action performed when the "Klienci" button is clicked. This method opens
+     * the AddClientForm for managing clients.
+     *
+     * @param evt The action event triggered by the "Klienci" button click.
+     */
     private void jButton1_Clients_AdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_Clients_AdminActionPerformed
         // TODO add your handling code here:
-        addClientForm addClientAdmin = new addClientForm();
+        AddClientForm addClientAdmin = new AddClientForm();
         addClientAdmin.setVisible(true);
         addClientAdmin.pack();
         addClientAdmin.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton1_Clients_AdminActionPerformed
 
+    /**
+     * Action performed when the logout button is clicked. This method handles
+     * the logout functionality without any additional actions.
+     *
+     * @param evt The mouse event triggered by the logout button click.
+     */
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
-        loginForm loginForm = new loginForm();
+        LoginForm loginForm = new LoginForm();
         loginForm.setVisible(true);
         dispose();
     }//GEN-LAST:event_logoutBtnActionPerformed

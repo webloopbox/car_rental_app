@@ -7,17 +7,21 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static wypozyczalnia_aut.Main.controller;
 
-public class addCarForm extends javax.swing.JFrame {
+public class AddCarForm extends javax.swing.JFrame {
 
     public static int edit_car_id;
 
-    public addCarForm() {
+    public AddCarForm() {
         initComponents();
 
         fetchCarListIntoTable();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * method that calls the controller.getAllCars() method of the Controller
+     * class to get a list of all cars and display it as a table
+     */
     private void fetchCarListIntoTable() {
         // Get the car data from the server
         List<Map<String, Object>> carData = null;
@@ -49,6 +53,10 @@ public class addCarForm extends javax.swing.JFrame {
         CarsTable.setModel(model);
     }
 
+    /**
+     * method that takes values from the form and adds a new car using
+     * controller.insertCar()
+     */
     private void addCar() {
         String brand = (String) SelectBrand.getSelectedItem();
         int year = Integer.parseInt(YearInput.getText());
@@ -185,11 +193,6 @@ public class addCarForm extends javax.swing.JFrame {
         jLabel8.setText("Pojemność silnika:");
 
         SelectBrand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Toyota", "Volkswagen", "Ford", "Honda", "Nissan", "Hyundai", "Chevrolet", "Kia", "Mercedes", "BMW " }));
-        SelectBrand.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SelectBrandActionPerformed(evt);
-            }
-        });
 
         AddCarBtn.setText("Dodaj auto");
         AddCarBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -344,14 +347,20 @@ public class addCarForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void SelectBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectBrandActionPerformed
-
-    }//GEN-LAST:event_SelectBrandActionPerformed
-
+    /**
+     * add car handler
+     *
+     * @param evt The action event triggered by clicking the "Clear" button.
+     */
     private void AddCarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddCarBtnActionPerformed
         this.addCar();
     }//GEN-LAST:event_AddCarBtnActionPerformed
 
+    /**
+     * Clears the input fields when the "Clear" button is clicked.
+     *
+     * @param evt The action event triggered by clicking the "Clear" button.
+     */
     private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
         YearInput.setText("");
         Capacity.setText("");
@@ -360,6 +369,11 @@ public class addCarForm extends javax.swing.JFrame {
         PriceInput.setText("");
     }//GEN-LAST:event_ClearBtnActionPerformed
 
+    /**
+     * Handles the removal of a car when the "Delete" button is clicked.
+     *
+     * @param evt The action event triggered by clicking the "Delete" button.
+     */
     private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
         String inputValue = JOptionPane.showInputDialog("Podaj ID samochodu:");
         int id = Integer.parseInt(inputValue);
@@ -368,6 +382,22 @@ public class addCarForm extends javax.swing.JFrame {
         Dashboard.fetchCarStats();
     }//GEN-LAST:event_DeleteBtnActionPerformed
 
+    /**
+     * Handles the action performed when the "Edit" button is clicked.
+     *
+     * If the button text is "Zapisz": - Retrieves the values from input fields.
+     * - Updates the car information in the database. - Refreshes the car list
+     * in the table. - Updates the car statistics on the dashboard. - Enables
+     * the "Add" and "Delete" buttons. - Changes the button text back to
+     * "Edytuj".
+     *
+     * If the button text is "Edytuj": - Prompts the user to enter a car ID. -
+     * Searches for the corresponding car in the table. - If found, populates
+     * the input fields with the car's information. - Disables the "Add" and
+     * "Delete" buttons. - Changes the button text to "Zapisz".
+     *
+     * @param evt The action event triggered by clicking the "Edit" button.
+     */
     private void EditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBtnActionPerformed
 
         if (EditBtn.getText().equals("Zapisz")) {
@@ -483,20 +513,21 @@ public class addCarForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(addCarForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddCarForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(addCarForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddCarForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(addCarForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddCarForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(addCarForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddCarForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new addCarForm().setVisible(true);
+                new AddCarForm().setVisible(true);
             }
         });
     }

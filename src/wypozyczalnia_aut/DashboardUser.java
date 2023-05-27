@@ -15,6 +15,9 @@ public class DashboardUser extends javax.swing.JFrame {
         ClientLabel.setText(controller.getUserData(controller.id, "username")[0]);
     }
 
+    /**
+     * Retrieves and displays the summary statistics of the user's car data.
+     */
     public static void getUserSummaryStats() {
         List<Map<String, Object>> carData = null;
         try {
@@ -283,24 +286,42 @@ public class DashboardUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Handles the action performed when button is clicked. Opens the ClientCars
+     * window.
+     *
+     * @param evt the ActionEvent object representing the event
+     */
     private void jButton1_Client_CarsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_Client_CarsActionPerformed
         // TODO add your handling code here:
-        clientCars clientCarsAll = new clientCars();
+        ClientCars clientCarsAll = new ClientCars();
         clientCarsAll.setVisible(true);
         clientCarsAll.pack();
         clientCarsAll.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton1_Client_CarsActionPerformed
 
+    /**
+     * Handles the action performed when button is clicked. Opens the
+     * RentCarFormClient window.
+     *
+     * @param evt the ActionEvent object representing the event
+     */
     private void jButton4_Rent_Car_ClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4_Rent_Car_ClientActionPerformed
         // TODO add your handling code here:
-        rentCarFormClient clientRentCar = new rentCarFormClient();
+        RentCarFormClient clientRentCar = new RentCarFormClient();
         clientRentCar.setVisible(true);
         clientRentCar.pack();
         clientRentCar.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton4_Rent_Car_ClientActionPerformed
 
+    /**
+     * Handles the action performed when the "wyloguj" button is clicked. Opens
+     * the LoginForm window and closes the current DashboardUser window.
+     *
+     * @param evt the ActionEvent object representing the event
+     */
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
-        loginForm loginForm = new loginForm();
+        LoginForm loginForm = new LoginForm();
         loginForm.setVisible(true);
         dispose();
     }//GEN-LAST:event_logoutBtnActionPerformed

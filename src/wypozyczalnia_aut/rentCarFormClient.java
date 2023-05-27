@@ -17,12 +17,15 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import static wypozyczalnia_aut.Main.controller;
 
-public class rentCarFormClient extends javax.swing.JFrame {
+public class RentCarFormClient extends javax.swing.JFrame {
 
     static int selectedCarRow;
     static String selectedCarRegistraion;
 
-    public rentCarFormClient() {
+    /**
+     * Creates new form RentCarFormClient.
+     */
+    public RentCarFormClient() {
         initComponents();
 
         rentFromInput.setMinSelectableDate(new Date());
@@ -36,14 +39,18 @@ public class rentCarFormClient extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Calculates and displays the total price based on the selected rental
+     * dates.
+     */
     public void showPrice() {
-        
+
         Date rentFrom = rentFromInput.getDate();
         Date rentTo = rentToInput.getDate();
 
         if (rentFrom == null || rentTo == null) {
             return;
-        } 
+        }
 
         LocalDate rentFromDate = rentFrom.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate rentToDate = rentTo.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -421,6 +428,11 @@ public class rentCarFormClient extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Handles the action when the order button is clicked.
+     *
+     * @params evt The action event.
+     */
     private void orderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderBtnActionPerformed
         String firstname = firstnameInput.getText();
         String surname = surnameInput.getText();
@@ -446,6 +458,11 @@ public class rentCarFormClient extends javax.swing.JFrame {
         DashboardUser.getUserSummaryStats();
     }//GEN-LAST:event_orderBtnActionPerformed
 
+    /**
+     * Handles the action when the choose menu button is clicked.
+     *
+     * @params evt The action event.
+     */
     private void chooseMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseMenuBtnActionPerformed
         List<Map<String, Object>> carData = null;
         try {
@@ -456,7 +473,7 @@ public class rentCarFormClient extends javax.swing.JFrame {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-// create a two-dimensional array to hold the car data
+        // create a two-dimensional array to hold the car data
         Object[][] data = new Object[carData.size()][5];
         for (int i = 0; i < carData.size(); i++) {
             Map<String, Object> car = carData.get(i);
@@ -516,6 +533,12 @@ public class rentCarFormClient extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chooseMenuBtnActionPerformed
 
+    /**
+     * Handles the property change event when the value of the rentToInput field
+     * is changed.
+     *
+     * @params evt The property change event.
+     */
     private void rentToInputPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_rentToInputPropertyChange
         Date rentFrom = rentFromInput.getDate();
         Date rentTo = rentToInput.getDate();
@@ -534,6 +557,12 @@ public class rentCarFormClient extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_rentToInputPropertyChange
 
+    /**
+     * Handles the property change event when the value of the rentFromInput
+     * field is changed.
+     *
+     * @params evt The property change event.
+     */
     private void rentFromInputPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_rentFromInputPropertyChange
         Date rentFrom = rentFromInput.getDate();
         Date rentTo = rentToInput.getDate();
@@ -567,20 +596,21 @@ public class rentCarFormClient extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(rentCarFormClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RentCarFormClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(rentCarFormClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RentCarFormClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(rentCarFormClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RentCarFormClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(rentCarFormClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RentCarFormClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new rentCarFormClient().setVisible(true);
+                new RentCarFormClient().setVisible(true);
             }
         });
     }
