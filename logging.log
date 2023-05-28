@@ -64,4 +64,44 @@
   2023-05-27 22:47:47 INFO  Dashboard:57 - Fetched car stats
   2023-05-27 22:47:49 INFO  AddCarForm:62 - add new car attempt
   2023-05-27 22:47:49 INFO  Dashboard:57 - Fetched car stats
+  2023-05-28 20:41:16 INFO  Main:15 - Application started
+  2023-05-28 20:42:58 INFO  Main:15 - Application started
+  2023-05-28 20:43:05 INFO  LoginForm:222 - login attempt
+  2023-05-28 20:43:06 INFO  Dashboard:17 - Admin dashboard entered
+  2023-05-28 20:43:06 INFO  Dashboard:57 - Fetched car stats
+  2023-05-28 20:49:29 INFO  Main:15 - Application started
+  2023-05-28 20:49:32 INFO  Main:15 - Application started
+  2023-05-28 20:49:48 INFO  LoginForm:222 - login attempt
+  2023-05-28 20:49:48 INFO  DashboardUser:15 - User dashboard entered
+  2023-05-28 20:49:55 INFO  LoginForm:222 - login attempt
+  2023-05-28 20:49:55 INFO  Dashboard:17 - Admin dashboard entered
+  2023-05-28 20:49:55 INFO  Dashboard:57 - Fetched car stats
+  2023-05-28 20:50:19 INFO  Dashboard:387 - logout triggered
+  2023-05-28 21:03:01 INFO  Main:14 - Application started
+  2023-05-28 21:03:05 INFO  Main:14 - Application started
+  2023-05-28 21:03:31 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:33 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:35 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:37 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:37 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:37 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:38 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:38 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:39 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:03:45 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:04:13 INFO  Main:14 - Application started
+  2023-05-28 21:04:18 INFO  Main:14 - Application started
+  2023-05-28 21:04:34 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:04:34 INFO  Dashboard:17 - Admin dashboard entered
+  2023-05-28 21:04:34 INFO  Dashboard:57 - Fetched car stats
+  2023-05-28 21:04:46 INFO  LoginForm:222 - login attempt
+  2023-05-28 21:04:46 INFO  DashboardUser:15 - User dashboard entered
+  2023-05-28 21:04:50 INFO  DashboardUser:319 - entered client car reservations view
+  2023-05-28 21:05:11 INFO  RentCarFormClient:440 - order car attempt
+  2023-05-28 21:05:20 INFO  DashboardUser:304 - entered client cars view
+  2023-05-28 21:05:27 INFO  Dashboard:344 - opened window for adding new reservations (admin)
+  2023-05-28 21:05:37 INFO  RentCarFormAdmin:310 - remove reservation attempt
+  2023-05-28 21:05:42 INFO  Dashboard:57 - Fetched car stats
+  2023-05-28 21:05:47 INFO  DashboardUser:304 - entered client cars view
+  2023-05-28 21:05:57 INFO  Dashboard:387 - logout triggered
   

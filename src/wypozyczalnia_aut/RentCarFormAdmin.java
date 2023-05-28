@@ -277,7 +277,7 @@ public class RentCarFormAdmin extends javax.swing.JFrame {
      * updated reservation list and updates the ReservationTable. Calls the
      * Dashboard's fetchCarStats method to update car statistics.
      */
-    private void addReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addReservationBtnActionPerformed
+    private void addReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {
         logger.info("add reservation attempt");
         String firstname = firstnameInput.getText();
         String surname = surnameInput.getText();
@@ -306,14 +306,14 @@ public class RentCarFormAdmin extends javax.swing.JFrame {
      * Fetches the updated reservation list and updates the ReservationTable.
      * Calls the Dashboard's fetchCarStats method to update car statistics.
      */
-    private void removeReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeReservationBtnActionPerformed
+    private void removeReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {
         logger.info("remove reservation attempt");
         String inputValue = JOptionPane.showInputDialog("Podaj ID rezerwacji:");
         int id = Integer.parseInt(inputValue);
         controller.deleteReservation(id);
         fetchReservationListIntoTable();
         Dashboard.fetchCarStats();
-    }//GEN-LAST:event_removeReservationBtnActionPerformed
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

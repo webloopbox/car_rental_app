@@ -9,24 +9,9 @@ import server.Server;
 public class Main {
     private static Logger logger = Logger.getLogger(Main.class);
     public static Controller controller;
-    private static Server server;
     
     public static void main(String[] args) {
         logger.info("Application started");
-        
-        server = new Server(); 
-        
-        /**
-        * Start nowego wątku, który uruchamia metodę main instancji Server
-         */
-        new Thread(() -> {
-            String[] args_ = {}; // arguments to pass to the main method
-        try {
-            server.main(args_); // call the main method of the Server instance
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        }).start();
         
         controller = new Controller();
 

@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.net.*;
 import java.sql.*;
 import java.time.temporal.ChronoUnit;
@@ -18,6 +19,9 @@ public class Server {
      */
     public static int portNumber = 8000;
 
+    private static final int INITIAL_PORT = 8000;
+    private static final int MAX_PORT = 9000;
+
     /**
      * The main method that starts the server.
      *
@@ -25,40 +29,56 @@ public class Server {
      * @throws Exception if an error occurs
      */
     public static void main(String[] args) throws Exception {
-        boolean foundPort = false;
+        int portNumber = findAvailablePort();
 
-        while (!foundPort) {
-            try {
-                ServerSocket ss = new ServerSocket(portNumber);
-                foundPort = true;
+        if (portNumber != -1) {
+            System.out.println("Server is running on port: " + portNumber);
 
-                System.out.println("Server is running...");
-                con = DriverManager.getConnection("jdbc:mysql://localhost/car_rental", "root", "");
+            // Creates a ServerSocket object to listen for incoming connections on the server
+            ServerSocket ss = new ServerSocket(portNumber);
 
-                while (true) {
-                    Socket s = ss.accept();
-                    System.out.println("New client connected: " + s);
-                    ClientHandler handler = new ClientHandler(s, con);
-                    new Thread(handler).start();
-                }
+            con = DriverManager.getConnection("jdbc:mysql://localhost/car_rental", "root", "");
 
-            } catch (Exception e) {
-                portNumber++;
+            // start an infinite loop that will listen for client connections all the time the server is running
+            while (true) {
+                /* wait for the client to establish a connection. When the client makes a connection,
+                   accept() method returns a new Socket object that represents that connection */
+                Socket s = ss.accept();
+                System.out.println("New client connected: " + s);
+                ClientHandler handler = new ClientHandler(s, con);
+                /* Each client connection is handled in a separate thread so that the server can handle multiple clients simultaneously */
+                new Thread(handler).start();
             }
+        } else {
+            System.out.println("No available port found.");
         }
     }
+
+    private static int findAvailablePort() {
+        for (int port = INITIAL_PORT; port <= MAX_PORT; port++) {
+            try {
+                ServerSocket ss = new ServerSocket(port);
+                ss.close();
+                return port;
+            } catch (IOException e) {
+                // Port is already in use, try the next one
+            }
+        }
+        return -1; // No available port found
+    }
+
 
     /**
      * Adds a new user to the database.
      *
-     * @param email the email of the user
-     * @param password the password of the user
-     * @param username the username of the user
+     * @param email     the email of the user
+     * @param password  the password of the user
+     * @param username  the username of the user
      * @param firstname the first name of the user
-     * @param lastname the last name of the user
-     * @param address the address of the user
-     * @param phone the phone number of the user
-     * @param role the role of the user
+     * @param lastname  the last name of the user
+     * @param address   the address of the user
+     * @param phone     the phone number of the user
+     * @param role      the role of the user
      * @return 0 if the user already exists, 1 if the user is added successfully
      * @throws SQLException if a database error occurs
      */
@@ -122,13 +142,13 @@ public class Server {
     /**
      * Inserts a new car into the database.
      *
-     * @param regNumber the registration number of the car
-     * @param brand the brand of the car
-     * @param model the model of the car
+     * @param regNumber      the registration number of the car
+     * @param brand          the brand of the car
+     * @param model          the model of the car
      * @param engineCapacity the engine capacity of the car
-     * @param year the year of the car
-     * @param price the price of the car
-     * @param availability the availability status of the car
+     * @param year           the year of the car
+     * @param price          the price of the car
+     * @param availability   the availability status of the car
      * @throws SQLException if a database error occurs
      */
     public static void insertCar(String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) throws SQLException {
@@ -159,7 +179,7 @@ public class Server {
      * Retrieves user data from the database for the given user ID and field
      * type.
      *
-     * @param userId the ID of the user
+     * @param userId    the ID of the user
      * @param fieldType the field type to retrieve (empty for all fields)
      * @return a list of user data for the matching user ID and field type
      * @throws SQLException if a database error occurs
@@ -253,14 +273,14 @@ public class Server {
     /**
      * Updates a car in the database with the provided information.
      *
-     * @param carId The ID of the car to update.
-     * @param regNumber The registration number of the car.
-     * @param brand The brand of the car.
-     * @param model The model of the car.
+     * @param carId          The ID of the car to update.
+     * @param regNumber      The registration number of the car.
+     * @param brand          The brand of the car.
+     * @param model          The model of the car.
      * @param engineCapacity The engine capacity of the car.
-     * @param year The year of the car.
-     * @param price The price of the car.
-     * @param availability The availability status of the car.
+     * @param year           The year of the car.
+     * @param price          The price of the car.
+     * @param availability   The availability status of the car.
      * @throws SQLException if there is an error executing the SQL update.
      */
     public static void updateCar(int carId, String regNumber, String brand, String model, double engineCapacity, int year, double price, boolean availability) throws SQLException {
@@ -280,13 +300,13 @@ public class Server {
     /**
      * Updates a user in the database with the provided information.
      *
-     * @param userId The ID of the user to update.
+     * @param userId    The ID of the user to update.
      * @param firstname The first name of the user.
-     * @param lastname The last name of the user.
-     * @param username The username of the user.
-     * @param email The email address of the user.
-     * @param address The address of the user.
-     * @param phone The phone number of the user.
+     * @param lastname  The last name of the user.
+     * @param username  The username of the user.
+     * @param email     The email address of the user.
+     * @param address   The address of the user.
+     * @param phone     The phone number of the user.
      * @throws SQLException if there is an error executing the SQL update.
      */
     public static void updateUser(int userId, String firstname, String lastname, String username, String email, String address, String phone) throws SQLException {
@@ -331,13 +351,13 @@ public class Server {
     /**
      * Adds a reservation for a user and a car to the database.
      *
-     * @param firstname The first name of the user.
-     * @param lastname The last name of the user.
+     * @param firstname    The first name of the user.
+     * @param lastname     The last name of the user.
      * @param registration The registration number of the car.
-     * @param rentFrom The start date of the rental.
-     * @param rentTo The end date of the rental.
+     * @param rentFrom     The start date of the rental.
+     * @param rentTo       The end date of the rental.
      * @throws SQLException if there is an error executing the SQL queries or if
-     * the user or car is not found.
+     *                      the user or car is not found.
      */
     public static void addReservation(String firstname, String lastname, String registration, java.sql.Date rentFrom, java.sql.Date rentTo) throws SQLException {
         // Get user ID from username
@@ -433,7 +453,7 @@ public class Server {
      *
      * @param reservationId The ID of the reservation to delete.
      * @throws SQLException if there is an error executing the SQL delete or if
-     * the reservation is not found.
+     *                      the reservation is not found.
      */
     public static void deleteReservation(int reservationId) throws SQLException {
         // Get car ID and rent dates from reservation ID

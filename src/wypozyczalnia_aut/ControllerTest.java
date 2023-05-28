@@ -165,7 +165,7 @@ public class ControllerTest {
     }
 
     @Test
-    @Order(14)
+    @Order(12)
     void getUserSummary() {
         int userId = Controller.userId;
         Map<String, Object> result = controller.getUserSummary(userId);
@@ -175,21 +175,21 @@ public class ControllerTest {
         java.sql.Date nearestReturnDate = (java.sql.Date) result.get("nearestReturnDate");
 
         // Perform assertions
-        assertNull(numReservations);
-        assertNull(totalCost);
-        assertNull(nearestReturnDate);
+        assertEquals(1, numReservations);
+        assertEquals(840.0, totalCost);
+        assertEquals("2023-06-16", nearestReturnDate.toString());
     }
 
     @Test
-    @Order(15)
+    @Order(13)
     void getTotalOrdersPrice() {
-        double expResult = 0.0;
+        double expResult = 840.0;
         double result = controller.getTotalOrdersPrice();
         assertEquals(expResult, result);
     }
 
     @Test
-    @Order(12)
+    @Order(14)
     void deleteReservation() {
         int reservationId = ControllerTest.reservationId;
         int result = controller.deleteReservation(reservationId);
@@ -197,7 +197,7 @@ public class ControllerTest {
     }
 
     @Test
-    @Order(13)
+    @Order(15)
     void deleteCar() {
         int id = Integer.parseInt(carId);
         int result = controller.deleteCar(id);
