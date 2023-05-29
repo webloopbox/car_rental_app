@@ -1,10 +1,10 @@
-package wypozyczalnia_aut;
+package client;
 
 import java.util.List;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
-import static wypozyczalnia_aut.Main.controller;
+import static client.Main.controller;
 
 public class ClientCars extends javax.swing.JFrame {
 

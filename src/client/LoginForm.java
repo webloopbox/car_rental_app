@@ -1,4 +1,4 @@
-package wypozyczalnia_aut;
+package client;
 
 import org.apache.log4j.Logger;
 
@@ -205,7 +205,7 @@ public class LoginForm extends javax.swing.JFrame {
      * @param evt the MouseEvent object representing the event
      */
     private void jLabel_RegisterUserMouseClicked(java.awt.event.MouseEvent evt) {
-        logger.info("entered register form");
+        logger.debug("entered register form");
         RegisterForm formReg = new RegisterForm();
         formReg.setVisible(true);
         formReg.pack();
@@ -219,7 +219,7 @@ public class LoginForm extends javax.swing.JFrame {
      * @param evt the ActionEvent object representing the event
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        logger.info("login attempt");
+        logger.debug("login attempt");
         String res = controller.loginUser( LoginInput, PassInput);
         if(res.equals("user")) {
             this.dispose();

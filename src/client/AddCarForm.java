@@ -1,4 +1,4 @@
-package wypozyczalnia_aut;
+package client;
 
 import org.apache.log4j.Logger;
 
@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import static wypozyczalnia_aut.Main.controller;
+import static client.Main.controller;
 
 public class AddCarForm extends javax.swing.JFrame {
     private static Logger logger = Logger.getLogger(AddCarForm.class);
@@ -59,7 +59,7 @@ public class AddCarForm extends javax.swing.JFrame {
      * method that takes values from the form and adds a new car using Controller insertCar()
      */
     private void addCar() {
-        logger.info("add new car attempt");
+        logger.debug("add new car attempt");
         int year;
         double price;
         String brand = (String) SelectBrand.getSelectedItem();

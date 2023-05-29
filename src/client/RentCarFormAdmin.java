@@ -1,4 +1,4 @@
-package wypozyczalnia_aut;
+package client;
 
 import org.apache.log4j.Logger;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import static wypozyczalnia_aut.Main.controller;
+import static client.Main.controller;
 
 public class RentCarFormAdmin extends javax.swing.JFrame {
     private static Logger logger = Logger.getLogger(RentCarFormAdmin.class);
@@ -278,7 +278,7 @@ public class RentCarFormAdmin extends javax.swing.JFrame {
      * Dashboard's fetchCarStats method to update car statistics.
      */
     private void addReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        logger.info("add reservation attempt");
+        logger.debug("add reservation attempt");
         String firstname = firstnameInput.getText();
         String surname = surnameInput.getText();
         String registration = regInput.getText();
@@ -307,7 +307,7 @@ public class RentCarFormAdmin extends javax.swing.JFrame {
      * Calls the Dashboard's fetchCarStats method to update car statistics.
      */
     private void removeReservationBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        logger.info("remove reservation attempt");
+        logger.debug("remove reservation attempt");
         String inputValue = JOptionPane.showInputDialog("Podaj ID rezerwacji:");
         int id = Integer.parseInt(inputValue);
         controller.deleteReservation(id);

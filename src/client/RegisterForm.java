@@ -1,4 +1,4 @@
-package wypozyczalnia_aut;
+package client;
 
 import helpers.Helpers;
 import org.apache.log4j.Logger;
@@ -59,7 +59,7 @@ public class RegisterForm extends javax.swing.JFrame {
      * stream (which is a network connection and connects to the local server)
      */
     private void registerUser() {
-        logger.info("register attempt");
+        logger.debug("register attempt");
         Helpers helpers = new Helpers();
         String email = EmailInput.getText();
         String pass = String.valueOf(PasswordInput.getPassword());

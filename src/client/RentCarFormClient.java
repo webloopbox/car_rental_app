@@ -1,4 +1,4 @@
-package wypozyczalnia_aut;
+package client;
 
 import org.apache.log4j.Logger;
 
@@ -18,7 +18,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import static wypozyczalnia_aut.Main.controller;
+import static client.Main.controller;
 
 public class RentCarFormClient extends javax.swing.JFrame {
     private static Logger logger = Logger.getLogger(RentCarFormClient.class);
@@ -34,10 +34,10 @@ public class RentCarFormClient extends javax.swing.JFrame {
         rentFromInput.setMinSelectableDate(new Date());
         rentToInput.setMinSelectableDate(new Date());
 
-        firstnameInput.setText(controller.getUserData(controller.userId, "firstname")[0]);
-        surnameInput.setText(controller.getUserData(controller.userId, "lastname")[0]);
-        emailInput.setText(controller.getUserData(controller.userId, "email")[0]);
-        phoneInput.setText(controller.getUserData(controller.userId, "phone")[0]);
+        firstnameInput.setText(controller.getUserData(Controller.userId, "firstname")[0]);
+        surnameInput.setText(controller.getUserData(Controller.userId, "lastname")[0]);
+        emailInput.setText(controller.getUserData(Controller.userId, "email")[0]);
+        phoneInput.setText(controller.getUserData(Controller.userId, "phone")[0]);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -436,7 +436,7 @@ public class RentCarFormClient extends javax.swing.JFrame {
      *
      * @params evt The action event.
      */
-    private void orderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderBtnActionPerformed
+    private void orderBtnActionPerformed(java.awt.event.ActionEvent evt) {
         logger.info("order car attempt");
         String firstname = firstnameInput.getText();
         String surname = surnameInput.getText();
@@ -475,7 +475,7 @@ public class RentCarFormClient extends javax.swing.JFrame {
      *
      * @params evt The action event.
      */
-    private void chooseMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseMenuBtnActionPerformed
+    private void chooseMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {
         List<Map<String, Object>> carData = null;
         try {
             carData = controller.getAllCars();
@@ -543,7 +543,7 @@ public class RentCarFormClient extends javax.swing.JFrame {
             showPrice();
 
         }
-    }//GEN-LAST:event_chooseMenuBtnActionPerformed
+    }
 
     /**
      * Handles the property change event when the value of the rentToInput field

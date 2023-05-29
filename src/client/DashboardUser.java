@@ -1,18 +1,17 @@
-package wypozyczalnia_aut;
+package client;
 
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 
-import static wypozyczalnia_aut.Main.controller;
+import static client.Main.controller;
 
 public class DashboardUser extends javax.swing.JFrame {
     private static Logger logger = Logger.getLogger(DashboardUser.class);
     public DashboardUser() {
-        logger.info("User dashboard entered");
+        logger.debug("User dashboard entered");
         initComponents();
 
         getUserSummaryStats();
@@ -295,14 +294,14 @@ public class DashboardUser extends javax.swing.JFrame {
      *
      * @param evt the ActionEvent object representing the event
      */
-    private void jButton1_Client_CarsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_Client_CarsActionPerformed
+    private void jButton1_Client_CarsActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         ClientCars clientCarsAll = new ClientCars();
         clientCarsAll.setVisible(true);
         clientCarsAll.pack();
         clientCarsAll.setLocationRelativeTo(null);
-        logger.info("entered client cars view");
-    }//GEN-LAST:event_jButton1_Client_CarsActionPerformed
+        logger.debug("entered client cars view");
+    }
 
     /**
      * Handles the action performed when button is clicked. Opens the
@@ -310,14 +309,14 @@ public class DashboardUser extends javax.swing.JFrame {
      *
      * @param evt the ActionEvent object representing the event
      */
-    private void jButton4_Rent_Car_ClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4_Rent_Car_ClientActionPerformed
+    private void jButton4_Rent_Car_ClientActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         RentCarFormClient clientRentCar = new RentCarFormClient();
         clientRentCar.setVisible(true);
         clientRentCar.pack();
         clientRentCar.setLocationRelativeTo(null);
-        logger.info("entered client car reservations view");
-    }//GEN-LAST:event_jButton4_Rent_Car_ClientActionPerformed
+        logger.debug("entered client car reservations view");
+    }
 
     /**
      * Handles the action performed when the "wyloguj" button is clicked. Opens
@@ -325,12 +324,12 @@ public class DashboardUser extends javax.swing.JFrame {
      *
      * @param evt the ActionEvent object representing the event
      */
-    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {
         LoginForm loginForm = new LoginForm();
         loginForm.setVisible(true);
         dispose();
-        logger.info("logout triggered");
-    }//GEN-LAST:event_logoutBtnActionPerformed
+        logger.debug("logout triggered");
+    }
 
     /**
      * @param args the command line arguments

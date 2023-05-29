@@ -1,10 +1,9 @@
-package wypozyczalnia_aut;
+package client;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import server.Server;
 
 public class Main {
     private static Logger logger = Logger.getLogger(Main.class);

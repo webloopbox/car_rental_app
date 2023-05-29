@@ -1,11 +1,11 @@
-package wypozyczalnia_aut;
+package client;
 
 import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
 
-import static wypozyczalnia_aut.Main.controller;
+import static client.Main.controller;
 
 public class Dashboard extends javax.swing.JFrame {
     private static Logger logger = Logger.getLogger(Dashboard.class);
@@ -14,7 +14,7 @@ public class Dashboard extends javax.swing.JFrame {
      * car statistics, and sets the admin icon.
      */
     public Dashboard() {
-        logger.info("Admin dashboard entered");
+        logger.debug("Admin dashboard entered");
         initComponents();
         fetchCarStats();
         jLabel_AdminIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("images/panelIcon.png")));
@@ -27,6 +27,7 @@ public class Dashboard extends javax.swing.JFrame {
      * and updates the total price label.
      */
     public static void fetchCarStats() {
+        logger.debug("fetch a car attempt");
         List<Map<String, Object>> carData = null;
         try {
             carData = controller.getAllCars();
@@ -54,7 +55,6 @@ public class Dashboard extends javax.swing.JFrame {
         Double totalOrdersPrice = controller.getTotalOrdersPrice();
         System.out.println("totalOrdersPrice: " + String.valueOf(totalOrdersPrice));
         totalPriceLabel.setText(String.valueOf(totalOrdersPrice));
-        logger.info("Fetched car stats");
     }
 
     @SuppressWarnings("unchecked")
@@ -341,7 +341,7 @@ public class Dashboard extends javax.swing.JFrame {
         rentCarAdmin.setVisible(true);
         rentCarAdmin.pack();
         rentCarAdmin.setLocationRelativeTo(null);
-        logger.info("opened window for adding new reservations (admin)");
+        logger.debug("opened window for adding new reservations (admin)");
     }
 
     /**
@@ -356,7 +356,7 @@ public class Dashboard extends javax.swing.JFrame {
         addCarAdmin.setVisible(true);
         addCarAdmin.pack();
         addCarAdmin.setLocationRelativeTo(null);
-        logger.info("opened window for adding new cars (admin)");
+        logger.debug("opened window for adding new cars (admin)");
     }
 
     /**
@@ -371,7 +371,7 @@ public class Dashboard extends javax.swing.JFrame {
         addClientAdmin.setVisible(true);
         addClientAdmin.pack();
         addClientAdmin.setLocationRelativeTo(null);
-        logger.info("opened window for adding new users (admin)");
+        logger.debug("opened window for adding new users (admin)");
     }
 
     /**
@@ -384,7 +384,7 @@ public class Dashboard extends javax.swing.JFrame {
         LoginForm loginForm = new LoginForm();
         loginForm.setVisible(true);
         dispose();
-        logger.info("logout triggered");
+        logger.debug("logout triggered");
     }
 
     /**
